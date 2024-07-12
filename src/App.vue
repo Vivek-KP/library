@@ -6,8 +6,12 @@
     <div class="page-content pt-4 ps-4 pe-4">
       <div class="ps-5">
         <div class=" ps-3  d-flex justify-content-end  mb-3">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
-            Add Member
+          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+            <div class="d-flex">
+              <span class="material-symbols-outlined fs-5 pe-1">person_add</span>
+              <span> Add Member</span>
+
+            </div>
           </button>
 
           <!-- Modal -->
@@ -22,17 +26,17 @@
                 <div class="modal-body border-0 ">
                   <form class=" w-100 p-2">
                     <div class="d-flex">
-                      <span class="material-symbols-outlined text-primary">
+                      <span class="material-symbols-outlined pt-2 text-primary">
                         person
                       </span>
-                      <input class="inputField w-100  border-end-0 border-start-0 border-top-0" id="name" type="text" v-model="userEmail"
+                      <input class="inputField w-100 border-1  border-end-0 border-start-0 border-top-0" id="name" type="text" v-model="userEmail"
                         placeholder="Enter name"><br>
                         </div>
                         <div class="d-flex mt-4">
-                      <span class="material-symbols-outlined text-primary">
+                      <span class="material-symbols-outlined pt-2 text-primary">
                         email
                       </span>
-                      <input class="inputField w-100 border-end-0 border-start-0 border-top-0" id="email" type="email" v-model="userEmail"
+                      <input class="inputField w-100 border-1 border-end-0 border-start-0 border-top-0" id="email" type="email" v-model="userEmail"
                         placeholder="Enter email address"><br>
 
                     </div>
@@ -40,8 +44,19 @@
                     </form>
                 </div>
                 <div class="modal-footer  border-0">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+                    <div class="d-flex">
+                      <span class="material-symbols-outlined fs-5">
+                          close
+                        </span>
+                      <span>Close</span>
+                    </div>
+                    </button>
+                  <button type="button" class="btn btn-sm btn-outline-primary"><div class="d-flex">
+              <span class="material-symbols-outlined fs-5 pe-1">check</span>
+              <span>Save</span>
+
+            </div></button>
                 </div>
               </div>
             </div>
@@ -219,7 +234,19 @@ ul li {
   width: 40px;
   height: 40px;
   background-color: #406ff3;
+}
+
+.inputField {
+    border: none;
+    border-bottom: 1px solid rgb(107, 107, 107);
+    outline: none;
+    font-size: 16px;
 
 
+}
+
+.inputField::placeholder{
+  font-size: 14px;
+  padding-left: 4px;
 }
 </style>
