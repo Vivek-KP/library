@@ -3,22 +3,22 @@
       <div class="sidebar-header">
         <h1>ibfn</h1>
       </div>
-      <div class="sidebar-menu nav-bar p-3   nav flex-column nav-pills">
-        <div class="card icon-card pt-2 pb-2 mb-4 mt-4">
-          <span class="material-symbols-outlined">
+      <div class="sidebar-menu nav-bar p-3  nav flex-column nav-pills">
+        <button class="btn btn-sm btn-outline-info mt-4" @click="pageNav('HOME')">
+          <span class="material-symbols-outlined fs-2">
             home
           </span>
-        </div>
-        <div class="card icon-card pt-2 pb-2 mb-4">
-          <span class="material-symbols-outlined">
+        </button>
+        <button class="btn btn-sm btn-outline-info mt-5"  @click="pageNav('BOOK')">
+          <span class="material-symbols-outlined fs-2">
             library_books
           </span>
-        </div>
-        <div class="card icon-card pt-2 pb-2">
-          <span class="material-symbols-outlined">
+        </button>
+        <button class="btn btn-sm btn-outline-info mt-5"  @click="pageNav('MEMBER')">
+          <span class="material-symbols-outlined fs-2">
             person
           </span>
-        </div>
+        </button>
       </div>
     </nav>
 
@@ -27,6 +27,12 @@
 <script>
 export default {
   name: 'SideBar',
+
+  methods:{
+    pageNav(navType){
+      this.$emit('navigate',navType)
+    }
+  }
  
 }
 </script>
@@ -64,9 +70,7 @@ element.style {
   width: 100%;
 }
 
-.material-symbols-outlined {
-  color: white;
-}
+
 
 .icon-card {
   background-color: #1f222a;
