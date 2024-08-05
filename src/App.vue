@@ -67,7 +67,7 @@ export default {
 
 
 .header {
-  border-bottom: 1px solid rgb(221, 221, 221);
+  /* border-bottom: 1px solid rgb(221, 221, 221); */
   height: 60px;
   margin-left: 80px;
   position: sticky;
@@ -75,7 +75,7 @@ export default {
   top: 0;
   /* Stick it to the top */
   z-index: 1000;
-  background-color: white
+  background-color: #171626
 }
 
 .page-content {

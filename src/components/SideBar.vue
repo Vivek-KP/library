@@ -4,17 +4,17 @@
         <h1>ibfn</h1>
       </div>
       <div class="sidebar-menu nav-bar p-3  nav flex-column nav-pills">
-        <button class="btn btn-sm btn-outline-info mt-4" @click="pageNav('HOME')">
+        <button class="btn btn-sm  mt-4" @click="pageNav('HOME')">
           <span class="material-symbols-outlined fs-2">
             home
           </span>
         </button>
-        <button class="btn btn-sm btn-outline-info mt-5"  @click="pageNav('BOOK')">
+        <button class="btn btn-sm  mt-5"  @click="pageNav('BOOK')">
           <span class="material-symbols-outlined fs-2">
             library_books
           </span>
         </button>
-        <button class="btn btn-sm btn-outline-info mt-5"  @click="pageNav('MEMBER')">
+        <button class="btn btn-sm  mt-5"  @click="pageNav('MEMBER')">
           <span class="material-symbols-outlined fs-2">
             person
           </span>
@@ -51,7 +51,7 @@ element.style {
 
 .page-sidebar {
   width: 80px;
-  background-color: #2b303b;
+  background-color: #1f1e2f;
   position: fixed;
   bottom: 0;
   top: 0;
@@ -60,7 +60,7 @@ element.style {
 }
 
 .sidebar-header{
-  background-color: #272b35;
+  background-color: #1f1e2f;
   height: 60px;
 }
 
@@ -76,6 +76,14 @@ element.style {
   background-color: #1f222a;
   border-radius: 8px;
 
+}
+
+.material-symbols-outlined{
+  color: #6f7480;
+}
+
+.material-symbols-outlined:hover{
+  color: #4e74f3;
 }
 
  

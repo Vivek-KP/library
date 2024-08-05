@@ -1,50 +1,56 @@
 <template>
-    <div ref="modal" class="modal fade" id="memberModel" tabindex="-1" role="dialog">
+    <div ref="modal" class="modal fade" data-bs-backdrop="static" id="memberModel" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title ps-2">{{ type }} MEMBER</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        @click="onClose"></button>
-                </div>
-                <div class="modal-body border-0 ">
-                    <form class=" w-100 pe-2 ps-2">
-                        <div class="d-flex">
-                            <span class="material-symbols-outlined me-2 pt-2 text-primary">
-                                person
+            <div class="modal-content bg-color">
+                <form @submit.prevent="decideProcess">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title font-color ps-2">{{ type }} MEMBER</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                            @click="onClose"></button>
+                    </div>
+                    <div class="modal-body border-0 ">
+                        <div class=" w-100 pe-2 ps-2">
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined me-2 pt-2 text-primary">
+                                    person
+                                </span>
+                                <input class="inputField text-white input-field form-control w-100 border-1 " id="name" type="text"
+                                    v-model="member.name" placeholder="Enter name"><br>
+                            </div>
+                            <span v-if="v$.member.name.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Name is required</p>
                             </span>
-                            <input class="inputField form-control w-100 border-1 " id="name" type="text"
-                                v-model="member.name" placeholder="Enter name"><br>
-                        </div>
-                        <div class="d-flex mt-4">
-                            <span class="material-symbols-outlined me-2 pt-2 text-primary">
-                                email
+                            <div class="d-flex mt-3">
+                                <span class="material-symbols-outlined me-2 pt-2 text-primary">
+                                    email
+                                </span>
+                                <input class="inputField text-white input-field form-control w-100 border-1 " id="name" type="email"
+                                    v-model="member.email" placeholder="Enter name"><br>
+                            </div>
+                            <span v-if="v$.member.email.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Email is required</p>
                             </span>
-                            <input class="inputField form-control w-100 border-1 " id="name" type="email"
-                                v-model="member.email" placeholder="Enter name"><br>
                         </div>
+                    </div>
+                    <div class="modal-footer  border-0">
+                        <button type="button" class="btn btn-sm btn-secondary" @click="onClose"
+                            data-bs-dismiss="modal">
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined fs-5">
+                                    close
+                                </span>
+                                <span>Close</span>
+                            </div>
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined fs-5 pe-1">check</span>
+                                <span>Save</span>
 
-
-                    </form>
-                </div>
-                <div class="modal-footer  border-0">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" @click="onClose"
-                        data-bs-dismiss="modal">
-                        <div class="d-flex">
-                            <span class="material-symbols-outlined fs-5">
-                                close
-                            </span>
-                            <span>Close</span>
-                        </div>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-primary" @click="decideProcess">
-                        <div class="d-flex">
-                            <span class="material-symbols-outlined fs-5 pe-1">check</span>
-                            <span>Save</span>
-
-                        </div>
-                    </button>
-                </div>
+                            </div>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -55,6 +61,8 @@
 import axios from 'axios'
 import bootstrapBundleMin from 'bootstrap/dist/js/bootstrap.bundle.min';
 import { defineProps, defineEmits, ref, onMounted, watch } from 'vue';
+import useVuelidate from '@vuelidate/core';
+import { required, email } from '@vuelidate/validators';
 
 const props = defineProps({
     type: String,
@@ -65,29 +73,35 @@ const props = defineProps({
     }
 
 })
-const emit = defineEmits(['onClose'])
+const emit = defineEmits(['onClose', 'onSave'])
 
 let modalInstance = ref(null)
 // const modalInstanc = ref(null)
-
+const member = ref({
+    name: '',
+    email: ''
+})
 const modal = ref(null)
+const rules = {
+    member: {
+        name: { required },
+        email: { email, required }
+    }
 
-// .swiper will only work if the ref swiper (Swiper element) has a property named swiper
-// const swiperComputed = computed(() => modal.value)
+}
 
 onMounted(() => {
+    modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
 
 }),
 
     watch(() => props.showSlider, (newVal) => {
         if (newVal) {
             console.log("true");
-            modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
             modalInstance.value.show();
         } else {
             console.log("false");
-
-            modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
+            // modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
             modalInstance.value.hide();
         }
     });
@@ -101,9 +115,9 @@ watch(() => props.memberId, () => {
 
 
 
-const member = ref({})
+const v$ = useVuelidate(rules, { member })
 const getAllMembers = () => {
-    axios.get(`http://127.0.0.1:5000/member?id=+${props.memberId}`).then((response) => {
+    axios.get(`http://127.0.0.1:5000/member?id=${props.memberId}`).then((response) => {
         const responseData = response.data
         member.value = responseData.data
     }).catch(() => {
@@ -112,40 +126,52 @@ const getAllMembers = () => {
 }
 
 const decideProcess = () => {
-    if (props.memberId) {
-        const params = {
-            id: member.value.id,
-            name: member.value.name,
-            email: member.value.email,
-            fee: 0
+    console.log("yhuhbjbjhb");
+    v$.value.$touch()
+    if (!v$.value.$invalid) {
+        if (props.memberId) {
+            updateMeber();
+        } else {
+            createMember();
         }
-        axios.put('http://127.0.0.1:5000/member', params).then((response) => {
-            console.log(response);
-            emit('onSaved')
-            this.onClose()
-        }).catch(() => {
-
-        })
     } else {
-        const params = {
-            name: member.value.name,
-            email: member.value.email
-        }
-        axios.post('http://127.0.0.1:5000/member', params).then((response) => {
-            console.log(response);
-            emit('onSaved')
-            onClose
-
-        }).catch(() => {
-
-        })
+        return false
+        
 
     }
 }
+
+const updateMeber = () => {
+    const params = {
+        id: member.value.id,
+        name: member.value.name,
+        email: member.value.email,
+        fee: 0
+    };
+    axios.put('http://127.0.0.1:5000/member', params).then((response) => {
+        console.log(response);
+        onClose()
+        emit('onSave');
+    }).catch(() => {
+    });
+}
+const createMember = () => {
+    const params = {
+        name: member.value.name,
+        email: member.value.email
+    };
+    axios.post('http://127.0.0.1:5000/member', params).then((response) => {
+        console.log(response);
+        onClose()
+        emit('onSave');
+    }).catch(() => {
+    });
+}
 const onClose = () => {
     member.value = {}
+    v$.value.$reset()
     emit('onClose')
-    // modalInstance.value.hide();
+    modalInstance.value.hide();
 }
 
 </script>
