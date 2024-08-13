@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between  mb-3">
             <div class="d-flex input-container">
                 <span class="material-symbols-outlined font-color p-1">search</span>
-                <input class=" border-0 search-field text-white" placeholder=" Search Member " type="text"
+                <input class=" border-0 search-field text-white" placeholder=" Search Book or Author " type="text"
                     v-model="searchBook">
             </div>
             <div class=" ps-3  d-flex justify-content-end ">
@@ -50,7 +50,7 @@
                     </tbody>
                     <tbody v-else>
                         <tr>
-                            <td align="center" class="p-5 text-secondary" colspan="10"><span
+                            <td align="center" class="p-5 text-secondary td-style" colspan="10"><span
                                     class="material-symbols-outlined">
                                     hourglass_empty
                                 </span>
@@ -83,7 +83,7 @@ const filterBook = computed({
     get(){
       if(searchBook.value != ''){
 
-        return bookList.value.filter(book=>book.title.toLowerCase().includes(searchBook.value))
+        return bookList.value.filter(book=>(book.title.toLowerCase().includes(searchBook.value) || book.author.toLowerCase().includes(searchBook.value)))
       }else{
         return bookList.value
 

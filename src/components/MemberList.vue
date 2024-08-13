@@ -36,7 +36,7 @@
           </tbody>
           <tbody v-else>
             <tr>
-              <td align="center" class="p-5 text-secondary" colspan="6"><span class="material-symbols-outlined">
+              <td align="center" class="p-5 text-secondary td-style" colspan="6"><span class="material-symbols-outlined">
                   hourglass_empty
                 </span>
                 <h5>No Members Yet</h5>
@@ -119,7 +119,6 @@ const deleteSlider = ref(false)
 const decideDelete = (member_Id) => {
   deleteSlider.value = true
   memberId.value = member_Id
-
 }
 
 // watch(()=>searchMember,(newVal)=>{
