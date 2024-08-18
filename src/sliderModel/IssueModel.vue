@@ -14,42 +14,47 @@
                                     menu_book
                                 </span>
                                 <select class=" form-select text-white form-control w-100 border-1 input-field" id="name" type="text"
-                                v-model="issueeBookDetails.book" placeholder="Select Book">
+                                v-model="issueBookDetails.book.id" placeholder="Select Book">
                                 <option value="" disabled selected>Select Book</option>
                                     <option  v-for="book in bookList" :key="book.id" :value="book.id">{{ book.title }}</option>
                                 </select><br>
                             </div>
-                            <!-- <span v-if="v$.issueeBookDetails.book.$error" class="text-danger">
-                                <p class="fs-6 text-start ps-4">* Book is required</p>
-                            </span> -->
+                            <span v-if="v$.issueBookDetails.book.id.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Select a book</p>
+                            </span>
                             <div class="d-flex mt-4">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     person
                                 </span>
                                 <select class=" form-select text-white form-control w-100 border-1 input-field" id="name" type="text"
-                                    v-model="issueeBookDetails.member" placeholder="Select Book">
-                                    <option value="" disabled selected>Select Member</option>
+                                    v-model="issueBookDetails.member.id" placeholder="Select Book">
+                                    <option value="" disabled selected>Select membr</option>
                                     <option  v-for="member in memberList" :key="member.id" :value="member.id">{{ member.name }}</option>
                                 </select><br>
                             </div>
-                            <!-- <span v-if="v$.issueeBookDetails.member.$error" class="text-danger">
-                                <p class="fs-6 text-start ps-4">* Member is required</p>
-                            </span> -->
+                            <span v-if="v$.issueBookDetails.member.id.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Select a member</p>
+                            </span>
                             <div class="d-flex mt-4" v-if="type !== 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     event
                                 </span>
                                 <Flatpicker class="text-white form-control w-100 border-1 input-field" 
-                                v-model="issueeBookDetails.issueDate" :config="config" placeholder="Enter Issueing date" ></Flatpicker><br>
+                                v-model="issueBookDetails.issueDate" :config="config" placeholder="Enter Issueing date" ></Flatpicker><br>
                             </div>
+                            <span v-if="v$.issueBookDetails.issueDate.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Pick Issued Date</p>
+                            </span>
                             <div class="d-flex mt-4" v-if="type !== 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     event_upcoming
                                 </span>
                                 <Flatpicker class="text-white form-control w-100 border-1 input-field" 
-                                v-model="issueeBookDetails.returnDate" :config="config" placeholder="Enter Return date" ></Flatpicker><br>
+                                v-model="issueBookDetails.returnDate" :config="config" placeholder="Enter Return date" ></Flatpicker><br>
                             </div>
-   
+                            <span v-if="v$.issueBookDetails.returnDate.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Pick a Return Date</p>
+                            </span>
                         </form>
                     </div>
                     <div class="modal-footer  border-0">
@@ -96,11 +101,13 @@ const emit = defineEmits(['onClose', 'onSave'])
 
 let modalInstance = ref(null)
 // const modalInstanc = ref(null)
-const issueeBookDetails = ref({
-    member: '',
-    book : '',
+const issueBookDetails = ref({
+    member: {id:''},
+    book : {id:''},
     issueDate :   '',
-    returnDate : ''
+    returnDate : '',
+    id:'',
+    fee:0
 })
 const config = ref({
         altFormat: 'M j, Y',
@@ -109,16 +116,20 @@ const config = ref({
 
 const modal = ref(null)
 const rules = {
-    issueeBookDetails: {
-        book:  { required },
-    author :  { required },
-    issueDate :  { required },
-    returnDate :  { required },
+    issueBookDetails: {
+        book:  { 
+            id: { required}
+         },
+        member :   { 
+            id: { required}
+         },
+        issueDate :  { required },
+        returnDate :  { required },
     }
 
 }
 
-const v$ = useVuelidate(rules, { issueeBookDetails })
+const v$ = useVuelidate(rules, { issueBookDetails })
 
 onMounted(() => {
     modalInstance.value = new bootstrap.Modal(modal.value);
@@ -175,23 +186,24 @@ const decideProcess = () => {
     console.log("yhuhbjbjhb");
     v$.value.$touch()
     if (!v$.value.$invalid) {
+        const params = {
+        id: issueBookDetails.value.id,
+        bookId: issueBookDetails.value.book.id,
+        memberId: issueBookDetails.value.member.id,
+        dateOfIssue: issueBookDetails.value.issueDate,
+        returnDate:issueBookDetails.value.returnDate
+    };
         if (props.bookId) {
-            updateMeber();
+            updateIssuedDetails(params);
         } else {
-            createbook();
+            cretaeBookIssue(params);
         }
     } else {
         return false
     }
 }
 
-const updateMeber = () => {
-    const params = {
-        id: issueeBookDetails.value.id,
-        name: issueeBookDetails.value.name,
-        email: issueeBookDetails.value.email,
-        fee: 0
-    };
+const updateIssuedDetails = (params) => {
     axios.put('http://127.0.0.1:5000/book', params).then((response) => {
         console.log(response);
         onClose();
@@ -199,8 +211,10 @@ const updateMeber = () => {
     }).catch(() => {
     });
 }
-const createbook = () => {
-    axios.post('http://127.0.0.1:5000/book', issueeBookDetails.value).then((response) => {
+const cretaeBookIssue = (params) => {
+    console.log(params);
+    
+    axios.post('http://127.0.0.1:5000/issue', params).then((response) => {
         console.log(response);
         onClose();
         emit('onSave');
@@ -208,7 +222,7 @@ const createbook = () => {
     });
 }
 const onClose = () => {
-    issueeBookDetails.value = {}
+    issueBookDetails.value.id = issueBookDetails.value.book.id = issueBookDetails.value.member.id = ''
     v$.value.$reset();
     emit('onClose')
     modalInstance.value.hide();

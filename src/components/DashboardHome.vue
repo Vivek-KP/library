@@ -70,26 +70,17 @@
               <th width="20%" class="td-style">Issued Book</th>
               <th class="td-style">Member Name</th>
               <th class="td-style">Issued Date</th>
+              <th class="td-style">Return Date  </th>
               <th class="td-style">Generated Fee</th>
               <th class="td-style">Renew/Return</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="td-style">1</td>
-              <td class="td-style">Harry potter</td>
-              <td class="td-style">Harry</td>
-              <td class="td-style">20/11/2002</td>
-              <td class="td-style">300</td>
-              <td  class="td-style"><a href="#" class="card-close" data-toggle="close"><span
-                    class="material-symbols-outlined  ps-1 text-success">
-                    autorenew
-                </span></a></td>
-            </tr>
+              <IssueRow v-for="(issuedData,index) in issuedBookDetails" :key="issuedData.id" :issuedData='issuedData' :index='index+1'/>
           </tbody>
         </table>
       </div>
-      <IssueModel  :showSlider="showSlider"  />
+      <IssueModel  :showSlider="showSlider"   @onSave="onSave" @onClose="onClose"/>
     </div>
   </div>
 </template>
@@ -98,6 +89,8 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import IssueModel from '@/sliderModel/IssueModel.vue';
+import IssueRow from './IssueRow.vue';
+
 
 const dashboardData = ref('')
 const getDashboardData = () => {
@@ -108,12 +101,37 @@ const getDashboardData = () => {
 
   })
 }
-
 onMounted(getDashboardData)
+
+
+const issuedBookDetails = ref([])
+const getIssuedBookDetail = ()=>{
+  axios.get('http://127.0.0.1:5000/issue').then(res=>{
+    const responsData = res.data
+    issuedBookDetails.value = responsData.data
+  }).catch(()=>{
+
+  })
+}
+onMounted(getIssuedBookDetail)
+
 
 const showSlider = ref(false)
 const Slider = () => {
   showSlider.value = true
+}
+
+const onClose = () => {
+  console.log('close');
+  showSlider.value = false
+  // memberId.value=''
+
+}
+const onSave = () => {
+  getIssuedBookDetail()
+  getDashboardData()
+  onClose()
+
 }
 </script>
 
