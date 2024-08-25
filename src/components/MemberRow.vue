@@ -4,6 +4,7 @@
         <td  class="td-style">{{ member.name }}</td>
         <td  class="td-style">{{ member.email }}</td>
         <td  class="td-style">{{ member.joined }}</td>
+        <td  class="td-style">{{ member.fee }}</td>
         <td  class="td-style"><a href="#" class="card-refresh" data-toggle="refresh" @click="onEdit"><span
                     class="material-symbols-outlined fs-5 text-primary">
                     edit

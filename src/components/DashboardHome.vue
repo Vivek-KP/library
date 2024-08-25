@@ -72,15 +72,17 @@
               <th class="td-style">Issued Date</th>
               <th class="td-style">Return Date  </th>
               <th class="td-style">Generated Fee</th>
-              <th class="td-style">Renew/Return</th>
+              <th class="td-style">Return</th>
             </tr>
           </thead>
           <tbody>
-              <IssueRow v-for="(issuedData,index) in issuedBookDetails" :key="issuedData.id" :issuedData='issuedData' :index='index+1'/>
+              <IssueRow v-for="(issuedData,index) in issuedBookDetails" :key="issuedData.id" :issuedData='issuedData' :index='index+1' :issueType="issueType"  @onReturn="onReturn"  />
           </tbody>
         </table>
       </div>
       <IssueModel  :showSlider="showSlider"   @onSave="onSave" @onClose="onClose"/>
+      <ReturnModel :returnSlider="returnSlider" :assignedFee="assignedFee" type="MEMBER" :issueId="issueId" @on-close="onClose" @on-delete = "onSave"/>
+
     </div>
   </div>
 </template>
@@ -90,6 +92,7 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import IssueModel from '@/sliderModel/IssueModel.vue';
 import IssueRow from './IssueRow.vue';
+import ReturnModel from '../sliderModel/ReturnModel.vue'
 
 
 const dashboardData = ref('')
@@ -117,14 +120,20 @@ onMounted(getIssuedBookDetail)
 
 
 const showSlider = ref(false)
+const returnSlider = ref(false)
+const assignedFee = ref(0)
+
 const Slider = () => {
   showSlider.value = true
 }
 
+
 const onClose = () => {
   console.log('close');
   showSlider.value = false
-  // memberId.value=''
+  returnSlider.value = false
+  issueId.value = ''
+  assignedFee.value = 0
 
 }
 const onSave = () => {
@@ -133,6 +142,13 @@ const onSave = () => {
   onClose()
 
 }
+const issueId = ref()
+const onReturn =(id,fee)=>{
+  issueId.value = id
+  assignedFee.value = fee
+  returnSlider.value = true
+}
+
 </script>
 
 <style scoped>
@@ -159,7 +175,7 @@ const onSave = () => {
 }
 
 .card4 {
-  color: #b4486b;
+  color: #c82357;
   background-color: rgba(180, 72, 107, 0.130);
 
 }

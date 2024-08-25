@@ -1,20 +1,20 @@
 <template>
     <nav class="page-sidebar">
       <div class="sidebar-header">
-        <h1>ibfn</h1>
+        <img src="../assets/open-book.png" class="mt-3" width="40px" height="40px">
       </div>
       <div class="sidebar-menu nav-bar p-3  nav flex-column nav-pills">
-        <button class="btn btn-sm  mt-4" @click="pageNav('HOME')">
+        <button class="btn btn-sm  mt-4" data-bs-toggle="tooltip" data-bs-placement="right" title="Home" @click="pageNav('HOME')">
           <span class="material-symbols-outlined fs-2">
             home
           </span>
         </button>
-        <button class="btn btn-sm  mt-5"  @click="pageNav('BOOK')">
+        <button class="btn btn-sm  mt-5" data-bs-toggle="tooltip" data-bs-placement="right" title="Books"  @click="pageNav('BOOK')">
           <span class="material-symbols-outlined fs-2">
-            library_books
+            book_2
           </span>
         </button>
-        <button class="btn btn-sm  mt-5"  @click="pageNav('MEMBER')">
+        <button class="btn btn-sm  mt-5" data-bs-toggle="tooltip" data-bs-placement="right" title="Members"  @click="pageNav('MEMBER')">
           <span class="material-symbols-outlined fs-2">
             person
           </span>
@@ -61,7 +61,7 @@ element.style {
 
 .sidebar-header{
   background-color: #1f1e2f;
-  height: 60px;
+  height: 70px;
 }
 
 .sidebar-menu {

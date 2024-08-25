@@ -1,15 +1,20 @@
 <template>
-    <div ref="deleteModel" class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div ref="returnModel" class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-color">
                 <div class="modal-header ">
-                    <h5 class="modal-title font-color fs-5" id="exampleModalLabel">Delete Member</h5>
+                    <h5 class="modal-title font-color fs-5" id="exampleModalLabel">Return Book</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
                         @click="onClose"></button>
                 </div>
                 <div class="modal-body font-color align-self-baseline pb-0">
-                    You are going to delete a member. Are you sure?
+                   <span v-if="assignedFee>0">
+                        Member has a rental fee of amount {{ assignedFee }}/- Rupees.Is the payment successfull?
+                   </span>
+                   <span v-else>
+
+                    </span>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" @click="onClose">
@@ -20,10 +25,14 @@
                             <span>Close</span>
                         </div>
                     </button>
-                    <button type="button" class="btn btn-sm btn-danger" @click="onDelete">
-                        <div class="d-flex">
-                            <span class="material-symbols-outlined fs-5 pe-1">delete</span>
-                            <span>Delete</span>
+                    <button type="button" class="btn btn-sm btn-primary" @click="onDelete">
+                        <div v-if ="assignedFee>0" class="d-flex">
+                            <span class="material-symbols-outlined fs-5 pe-1">check</span>
+                            <span>Paid</span>
+                        </div>
+                        <div v-else>
+                            <span class="material-symbols-outlined fs-5 pe-1">autorenew</span>
+                            <span>Return</span>
                         </div>
                     </button>
                 </div>
@@ -36,24 +45,23 @@
 import axios from 'axios';
 import bootstrapBundleMin from 'bootstrap/dist/js/bootstrap.bundle.min';
 import { defineProps, defineEmits, ref, onMounted, watch } from 'vue';
-import { toast } from 'vue3-toastify'
-
 
 const props = defineProps({
     type: String,
-    memberId: Number,
-    deleteSlider: {
+    issueId: Number,
+    returnSlider: {
         Boolean,
         default: false
-    }
+    },
+    assignedFee:Number
 
 })
 
-const emit = defineEmits(['onClose', 'onDelete'])
+const emit = defineEmits(['onClose','onDelete'])
 let modalInstance = ref(null)
-const deleteModel = ref(null)
+const returnModel = ref(null)
 
-watch(() => props.deleteSlider, (newVal) => {
+watch(() => props.returnSlider, (newVal) => {
     if (newVal) {
         console.log("true");
         modalInstance.value.show();
@@ -68,30 +76,16 @@ const onClose = () => {
     emit('onClose')
 }
 
-const onDelete = () => {
-    axios.delete(`http://127.0.0.1:5000/member?id=${props.memberId}`).then((response) => {
-        const responseData = response.data
-        if (responseData.status === 'SUCCESS') {
-            emit('onDelete')
-            toast.success('Member Deleted Successfully', {
-                timeout: 500,
-                theme: 'colored'
-            });
-        } else {
-            toast.error(responseData.message, {
-                timeout: 500,
-                theme: 'colored'
-            });
-        }
-        }).catch(() => {
-            toast.error('Something went wrong', {
-                timeout: 500,
-                theme: 'colored'
-            });
-        })
+const onDelete = () =>{
+    axios.delete(`http://127.0.0.1:5000/issue?id=${props.issueId}`).then(()=>{
+    // modalInstance.value.hide()
+    emit('onDelete')
+    }).catch(()=>{
+
+    })
 }
 onMounted(() => {
-    modalInstance.value = new bootstrapBundleMin.Modal(deleteModel.value);
+    modalInstance.value = new bootstrapBundleMin.Modal(returnModel.value);
 
 })
 </script>

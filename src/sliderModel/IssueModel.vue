@@ -22,7 +22,7 @@
                             <span v-if="v$.issueBookDetails.book.id.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Select a book</p>
                             </span>
-                            <div class="d-flex mt-4">
+                            <div  class="d-flex mt-4">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     person
                                 </span>
@@ -89,12 +89,13 @@ import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 
 const props = defineProps({
-    type: String,
     bookId: Number,
     showSlider: {
         Boolean,
         default: false
-    }
+    },
+    issueType:String
+
 
 })
 const emit = defineEmits(['onClose', 'onSave'])

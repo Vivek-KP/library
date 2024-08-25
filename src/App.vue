@@ -1,57 +1,45 @@
 <template>
   <div>
-    <SideBar @navigate="navigation"/>
-    <div class="header">
+    <SideBar @navigate="navigation" />
+    <div class="header d-flex justify-content-between">
+      <div>
+      
+      </div>
+      <div class="pt-3 pe-3">
+        <span class="material-symbols-outlined fs-1 " style="color: #4e74f3;">
+          account_circle
+        </span>
+      
+      </div>
     </div>
-    <div class="page-content pt-4 ps-4 pe-4">
-      <component :is="component"/>
+    <div class="page-content mt-4 pt-4 ps-4 pe-4">
+      <router-view />
     </div>
 
   </div>
 </template>
 
-<script>
-import { markRaw } from 'vue';
+<script setup>
+import { useRouter } from 'vue-router';
 import SideBar from './components/SideBar.vue'
-import MemberList from './components/MemberList.vue'
-import BookList from "./components/BookList.vue";
-import DashboardHome from './components/DashboardHome.vue';
 
-export default {
-  name: 'App',
-  components: {
-    SideBar,
-    MemberList,
-    DashboardHome,
-    BookList
-
-  },
-  data(){
-    return{
-      component: markRaw(DashboardHome),
-      componentsAvailable: {
-        DashboardHome: markRaw(DashboardHome),
-        MemberList: markRaw(MemberList),
-        BookList: markRaw(BookList)
-      },
-    }
-  },
-  methods:{
-    navigation(type){
-      switch (type) {
-        case 'BOOK':
-          this.component = this.componentsAvailable.BookList
-          break;
-        case 'MEMBER':
-          this.component = this.componentsAvailable.MemberList
-          break;
-        default:
-        this.component = this.componentsAvailable.DashboardHome
-          break;
-      }
-    }
-  }
+const router = useRouter();
+const navigation = (route) => {
+  router.push({ name: route });
+  // switch (type) {
+  //   case 'BOOK':
+  //     this.component = this.componentsAvailable.BookList
+  //     break;
+  //   case 'MEMBER':
+  //     this.component = this.componentsAvailable.MemberList
+  //     break;
+  //   default:
+  //   this.component = this.componentsAvailable.DashboardHome
+  //     break;
+  // }
 }
+
+
 </script>
 
 
@@ -82,7 +70,9 @@ export default {
   margin-left: 80px;
 }
 
-.update-stock-button:hover{
-color: white !important;
+.update-stock-button:hover {
+  color: white !important;
 }
+
+
 </style>

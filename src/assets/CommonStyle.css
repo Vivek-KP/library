@@ -47,3 +47,30 @@
 .search-field::placeholder{
     color: #9499a4;
 }
+
+/* Example of customizing the colored theme */
+
+/* Adjust the background color of success toasts */
+.vue-toastification-container .vue-toastification__toast--success {
+    background-color: #4caf50; /* Custom success color */
+    color: #fff; /* Text color */
+  }
+  
+  /* Adjust the background color of error toasts */
+  .vue-toastification-container .vue-toastification__toast--error {
+    background-color: #f44336; /* Custom error color */
+    color: #fff; /* Text color */
+  }
+  
+  /* Adjust the background color of info toasts */
+  .vue-toastification-container .vue-toastification__toast--info {
+    background-color: #2196f3; /* Custom info color */
+    color: #fff; /* Text color */
+  }
+  
+  /* Adjust the background color of warning toasts */
+  .vue-toastification-container .vue-toastification__toast--warning {
+    background-color: #ff9800; /* Custom warning color */
+    color: #fff; /* Text color */
+  }
+  

@@ -113,6 +113,7 @@ import Flatpicker from 'vue-flatpickr-component'
 import { defineProps, defineEmits, ref, onMounted, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import {toast} from 'vue3-toastify'
 
 const props = defineProps({
     type: String,
@@ -184,14 +185,24 @@ watch(() => props.bookId, () => {
 const getAllbooks = () => {
     axios.get(`http://127.0.0.1:5000/book?id=${props.bookId}`).then((response) => {
         const responseData = response.data
-        book.value = responseData.data
-    }).catch(() => {
+        if(responseData.status === 'SUCCESS'){
+            book.value = responseData.data
 
+        }else{
+            toast.error(responseData.message, {
+            timeout: 500,
+            theme: 'colored'
+        });
+        }
+    }).catch(() => {
+        toast.error("Something went wrong", {
+            timeout: 500,
+            theme: 'colored'
+        });
     })
 }
 
 const decideProcess = () => {
-    console.log("yhuhbjbjhb");
     v$.value.$touch()
     if (!v$.value.$invalid) {
         if (props.bookId) {
@@ -212,18 +223,48 @@ const updateMeber = () => {
         fee: 0
     };
     axios.put('http://127.0.0.1:5000/book', params).then((response) => {
-        console.log(response);
+        const responseData = response.data
+        if(responseData.status === 'SUCCESS'){
+            toast.success('Book Updated Successfully', {
+            timeout: 500,
+            theme: 'colored'
+        });
+            emit('onSave');
+        }else{
+            toast.error(responseData.message, {
+            timeout: 500,
+            theme: 'colored'
+        });
+        } 
         onClose();
-        emit('onSave');
     }).catch(() => {
+        toast.error("Something went wrong", {
+            timeout: 500,
+            theme: 'colored'
+        });
     });
 }
 const createbook = () => {
     axios.post('http://127.0.0.1:5000/book', book.value).then((response) => {
-        console.log(response);
-        onClose();
+        const responseData = response.data
+        if(responseData.status === 'SUCCESS'){
+            toast.success('Bood Added Successfully', {
+            timeout: 500,
+            theme: 'colored'
+        });
         emit('onSave');
+        }else{
+            toast.error(responseData.message, {
+            timeout: 500,
+            theme: 'colored'
+        });
+        }
+        onClose()
     }).catch(() => {
+        toast.error("Something went wrong", {
+            timeout: 500,
+            theme: 'colored'
+        });
     });
 }
 const onClose = () => {

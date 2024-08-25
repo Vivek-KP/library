@@ -25,6 +25,7 @@
               <th class="td-style"> Member Name</th>
               <th class="td-style">Email</th>
               <th class="td-style">Joined Date</th>
+              <th class="td-style">Total Fee</th>
               <th class="td-style">Edit</th>
               <th class="td-style">Delete</th>
 
@@ -59,8 +60,8 @@ import axios from 'axios';
 import MemberModel from '../sliderModel/MemberModel.vue'
 import MemberRow from '../components/MemberRow.vue';
 import DeleteSlider from '../sliderModel/DeleteSlider.vue'
-
-
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css';
 
 const type = ref('')
 const showSlider = ref(false)
@@ -81,12 +82,15 @@ const filterMember = computed({
   
 })
 const getAllMembers = () => {
-  console.log("mlkjn");
   axios.get('http://127.0.0.1:5000/member').then((response) => {
     const responseData = response.data
     memberList.value = responseData.data
+   
   }).catch(() => {
-
+    toast.error('Something went wrong', {
+    timeout: 500,
+    theme: 'colored'
+  });
   })
 
 }
@@ -96,7 +100,6 @@ const Slider = () => {
   showSlider.value = true
 }
 const onClose = () => {
-  console.log('close');
   showSlider.value = false
   deleteSlider.value = false
   memberId.value=''
@@ -117,15 +120,11 @@ const onEdit = (member_Id) => {
 const deleteSlider = ref(false)
 
 const decideDelete = (member_Id) => {
+
   deleteSlider.value = true
   memberId.value = member_Id
 }
 
-// watch(()=>searchMember,(newVal)=>{
-//   if(newVal){
-
-//   }
-// })
 
 
 onMounted(getAllMembers)
@@ -147,5 +146,9 @@ onMounted(getAllMembers)
   border-top: 0;
 }
 
+.vue-toastification-container .vue-toastification__toast--success {
+  background-color: #4caf50; /* Custom success color */
+  color: #fff; /* Text color */
+}
 
 </style>
