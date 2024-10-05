@@ -5,7 +5,8 @@
                 <form @submit.prevent="decideProcess">
                     <div class="modal-header border-0">
                         <h5 class="modal-title font-color ps-2">{{ type }} BOOK</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"  @click="onClose"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close" @click="onClose"></button>
                     </div>
                     <div class="modal-body border-0 ">
                         <form class=" w-100 pe-2 ps-2">
@@ -13,23 +14,26 @@
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     menu_book
                                 </span>
-                                <select class=" form-select text-white form-control w-100 border-1 input-field" id="name" type="text"
-                                v-model="issueBookDetails.book.id" placeholder="Select Book">
-                                <option value="" disabled selected>Select Book</option>
-                                    <option  v-for="book in bookList" :key="book.id" :value="book.id">{{ book.title }}</option>
+                                <select class=" form-select text-white form-control w-100 border-1 input-field"
+                                    id="name" type="text" v-model="issueBookDetails.book.id" placeholder="Select Book">
+                                    <option value="" disabled selected>Select Book</option>
+                                    <option v-for="book in bookList" :key="book.id" :value="book.id">{{ book.title }}
+                                    </option>
                                 </select><br>
                             </div>
                             <span v-if="v$.issueBookDetails.book.id.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Select a book</p>
                             </span>
-                            <div  class="d-flex mt-4">
+                            <div class="d-flex mt-4">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     person
                                 </span>
-                                <select class=" form-select text-white form-control w-100 border-1 input-field" id="name" type="text"
-                                    v-model="issueBookDetails.member.id" placeholder="Select Book">
+                                <select class=" form-select text-white form-control w-100 border-1 input-field"
+                                    id="name" type="text" v-model="issueBookDetails.member.id"
+                                    placeholder="Select Book">
                                     <option value="" disabled selected>Select membr</option>
-                                    <option  v-for="member in memberList" :key="member.id" :value="member.id">{{ member.name }}</option>
+                                    <option v-for="member in memberList" :key="member.id" :value="member.id">{{
+                                        member.name }}</option>
                                 </select><br>
                             </div>
                             <span v-if="v$.issueBookDetails.member.id.$error" class="text-danger">
@@ -39,8 +43,9 @@
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     event
                                 </span>
-                                <Flatpicker class="text-white form-control w-100 border-1 input-field" 
-                                v-model="issueBookDetails.issueDate" :config="config" placeholder="Enter Issueing date" ></Flatpicker><br>
+                                <Flatpicker class="text-white form-control w-100 border-1 input-field"
+                                    v-model="issueBookDetails.issueDate" :config="config"
+                                    placeholder="Enter Issueing date"></Flatpicker><br>
                             </div>
                             <span v-if="v$.issueBookDetails.issueDate.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Pick Issued Date</p>
@@ -49,8 +54,9 @@
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     event_upcoming
                                 </span>
-                                <Flatpicker class="text-white form-control w-100 border-1 input-field" 
-                                v-model="issueBookDetails.returnDate" :config="config" placeholder="Enter Return date" ></Flatpicker><br>
+                                <Flatpicker class="text-white form-control w-100 border-1 input-field"
+                                    v-model="issueBookDetails.returnDate" :config="config"
+                                    placeholder="Enter Return date"></Flatpicker><br>
                             </div>
                             <span v-if="v$.issueBookDetails.returnDate.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Pick a Return Date</p>
@@ -58,7 +64,7 @@
                         </form>
                     </div>
                     <div class="modal-footer  border-0">
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"  @click="onClose">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" @click="onClose">
                             <div class="d-flex">
                                 <span class="material-symbols-outlined fs-5">
                                     close
@@ -87,6 +93,8 @@ import Flatpicker from 'vue-flatpickr-component'
 import { defineProps, defineEmits, ref, watch, onMounted } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css';
 
 const props = defineProps({
     bookId: Number,
@@ -94,7 +102,7 @@ const props = defineProps({
         Boolean,
         default: false
     },
-    issueType:String
+    issueType: String
 
 
 })
@@ -103,29 +111,29 @@ const emit = defineEmits(['onClose', 'onSave'])
 let modalInstance = ref(null)
 // const modalInstanc = ref(null)
 const issueBookDetails = ref({
-    member: {id:''},
-    book : {id:''},
-    issueDate :   '',
-    returnDate : '',
-    id:'',
-    fee:0
+    member: { id: '' },
+    book: { id: '' },
+    issueDate: '',
+    returnDate: '',
+    id: '',
+    fee: 0
 })
 const config = ref({
-        altFormat: 'M j, Y',
-        dateFormat: 'd-m-Y',       
-    });
+    altFormat: 'M j, Y',
+    dateFormat: 'd-m-Y',
+});
 
 const modal = ref(null)
 const rules = {
     issueBookDetails: {
-        book:  { 
-            id: { required}
-         },
-        member :   { 
-            id: { required}
-         },
-        issueDate :  { required },
-        returnDate :  { required },
+        book: {
+            id: { required }
+        },
+        member: {
+            id: { required }
+        },
+        issueDate: { required },
+        returnDate: { required },
     }
 
 }
@@ -138,27 +146,28 @@ onMounted(() => {
 })
 const memberList = ref([])
 const getAllMembers = () => {
-  console.log("mlkjn");
-  axios.get('http://127.0.0.1:5000/member').then((response) => {
-    const responseData = response.data
-    memberList.value = responseData.data
-  }).catch(() => {
+    console.log("mlkjn");
+    console.log('API Base URL:', process.env.VUE_APP_API_BASE_URL);
+    axios.get(`${process.env.VUE_APP_API_BASE_URL}/member`).then((response) => {
+        const responseData = response.data
+        memberList.value = responseData.data
+    }).catch(() => {
 
-  })
+    })
 
 }
 onMounted(getAllMembers)
 
-    watch(() => props.showSlider, (newVal) => {
-        if (newVal) {
-            console.log("true");
-            modalInstance.value.show();
-        } else {
-            console.log("false");
-            // modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
-            modalInstance.value.hide();
-        }
-    });
+watch(() => props.showSlider, (newVal) => {
+    if (newVal) {
+        console.log("true");
+        modalInstance.value.show();
+    } else {
+        console.log("false");
+        // modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
+        modalInstance.value.hide();
+    }
+});
 
 watch(() => props.bookId, () => {
     if (props.bookId > 0 && props.type == 'EDIT') {
@@ -173,9 +182,10 @@ watch(() => props.bookId, () => {
 
 const bookList = ref([])
 const getAllbooks = () => {
-    axios.get(`http://127.0.0.1:5000/book`).then((response) => {
+    axios.get(`${process.env.VUE_APP_API_BASE_URL}/book`).then((response) => {
         const responseData = response.data
-        bookList.value = responseData.data
+
+        bookList.value = responseData.data.filter(book => book.stock > 0)
     }).catch(() => {
 
     })
@@ -188,12 +198,12 @@ const decideProcess = () => {
     v$.value.$touch()
     if (!v$.value.$invalid) {
         const params = {
-        id: issueBookDetails.value.id,
-        bookId: issueBookDetails.value.book.id,
-        memberId: issueBookDetails.value.member.id,
-        dateOfIssue: issueBookDetails.value.issueDate,
-        returnDate:issueBookDetails.value.returnDate
-    };
+            id: issueBookDetails.value.id,
+            bookId: issueBookDetails.value.book.id,
+            memberId: issueBookDetails.value.member.id,
+            dateOfIssue: issueBookDetails.value.issueDate,
+            returnDate: issueBookDetails.value.returnDate
+        };
         if (props.bookId) {
             updateIssuedDetails(params);
         } else {
@@ -205,33 +215,64 @@ const decideProcess = () => {
 }
 
 const updateIssuedDetails = (params) => {
-    axios.put('http://127.0.0.1:5000/book', params).then((response) => {
-        console.log(response);
+    axios.put(`${process.env.VUE_APP_API_BASE_URL}/book`, params).then((response) => {
+        const responseData = response.data
+        if (responseData.status === 'SUCCESS') {
+            toast.success('Book Issued Successfully', {
+                timeout: 500,
+                theme: 'colored'
+            });
+            emit('onSave');
+        } else {
+            toast.info(responseData.message, {
+                timeout: 500,
+                theme: 'colored'
+            });
+        }
         onClose();
-        emit('onSave');
     }).catch(() => {
+        toast.error("Something went wrong", {
+            timeout: 500,
+            theme: 'colored'
+        });
     });
 }
 const cretaeBookIssue = (params) => {
     console.log(params);
-    
-    axios.post('http://127.0.0.1:5000/issue', params).then((response) => {
-        console.log(response);
+
+    axios.post(`${process.env.VUE_APP_API_BASE_URL}/issue`, params).then((response) => {
+        const responseData = response.data
+        if (responseData.status === 'SUCCESS') {
+            toast.success('Book Issued Successfully', {
+                timeout: 500,
+                theme: 'colored'
+            });
+            emit('onSave');
+        } else {
+            toast.info(responseData.message, {
+                timeout: 500,
+                theme: 'colored'
+            });
+        }
         onClose();
-        emit('onSave');
     }).catch(() => {
+        toast.error("Something went wrong", {
+            timeout: 500,
+            theme: 'colored'
+        });
     });
 }
 const onClose = () => {
-    issueBookDetails.value.id = issueBookDetails.value.book.id = issueBookDetails.value.member.id = ''
+    issueBookDetails.value.id = ""
+    issueBookDetails.value.book.id = ""
+    issueBookDetails.value.member.id = ""
+    issueBookDetails.value.issueDate = ""
+    issueBookDetails.value.returnDate
     v$.value.$reset();
+
     emit('onClose')
     modalInstance.value.hide();
 }
 </script>
 
-<style scoped>
-
-
-
-</style>
+<style scoped></style>

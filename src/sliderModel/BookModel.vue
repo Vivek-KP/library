@@ -1,5 +1,5 @@
 <template>
-    <div ref="modal" class="modal fade " data-bs-backdrop="static" id="bookModel" tabindex="-1" role="dialog">
+    <div ref="modal" class="modal fade" data-bs-backdrop="static" id="bookModel" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-color">
                 <form @submit.prevent="decideProcess">
@@ -133,7 +133,6 @@ const book = ref({
     author : '',
     averageRating :  '',
     isbn :  '',
-    numPages : 0,
     stock : '',
     publicationDate :   '',
     publisher : ''
@@ -183,13 +182,13 @@ watch(() => props.bookId, () => {
 
 // const v$ = useVuelidate(rules, { book })
 const getAllbooks = () => {
-    axios.get(`http://127.0.0.1:5000/book?id=${props.bookId}`).then((response) => {
+    axios.get(`${process.env.VUE_APP_API_BASE_URL}/book?id=${props.bookId}`).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
             book.value = responseData.data
 
         }else{
-            toast.error(responseData.message, {
+            toast.info(responseData.message, {
             timeout: 500,
             theme: 'colored'
         });
@@ -206,7 +205,7 @@ const decideProcess = () => {
     v$.value.$touch()
     if (!v$.value.$invalid) {
         if (props.bookId) {
-            updateMeber();
+            updateBook();
         } else {
             createbook();
         }
@@ -215,14 +214,9 @@ const decideProcess = () => {
     }
 }
 
-const updateMeber = () => {
-    const params = {
-        id: book.value.id,
-        name: book.value.name,
-        email: book.value.email,
-        fee: 0
-    };
-    axios.put('http://127.0.0.1:5000/book', params).then((response) => {
+const updateBook = () => {
+   
+    axios.put(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
             toast.success('Book Updated Successfully', {
@@ -231,7 +225,7 @@ const updateMeber = () => {
         });
             emit('onSave');
         }else{
-            toast.error(responseData.message, {
+            toast.info(responseData.message, {
             timeout: 500,
             theme: 'colored'
         });
@@ -245,7 +239,7 @@ const updateMeber = () => {
     });
 }
 const createbook = () => {
-    axios.post('http://127.0.0.1:5000/book', book.value).then((response) => {
+    axios.post(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
             toast.success('Bood Added Successfully', {
@@ -253,13 +247,13 @@ const createbook = () => {
             theme: 'colored'
         });
         emit('onSave');
-        }else{
-            toast.error(responseData.message, {
-            timeout: 500,
-            theme: 'colored'
-        });
-        }
         onClose()
+        }else{
+            toast.info(responseData.message, {
+                timeout: 500,
+                theme: 'colored'
+            });
+        }
     }).catch(() => {
         toast.error("Something went wrong", {
             timeout: 500,

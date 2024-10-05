@@ -115,7 +115,7 @@ watch(() => props.memberId, () => {
 
 const v$ = useVuelidate(rules, { member })
 const getAllMembers = () => {
-    axios.get(`http://127.0.0.1:5000/member?id=${props.memberId}`).then((response) => {
+    axios.get(`${process.env.VUE_APP_API_BASE_URL}/member?id=${props.memberId}`).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
             member.value = responseData.data
@@ -156,11 +156,11 @@ const updateMeber = () => {
         email: member.value.email,
         fee: 0
     };
-    axios.put('http://127.0.0.1:5000/member', params).then((response) => {
+    axios.put(`${process.env.VUE_APP_API_BASE_URL}/member`, params).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
             toast.success('Member Updated Successfully', {
-            timeout: 500,
+            timeout: 100,
             theme: 'colored'
         });
             emit('onSave');
@@ -183,7 +183,7 @@ const createMember = () => {
         name: member.value.name,
         email: member.value.email
     };
-    axios.post('http://127.0.0.1:5000/member', params).then((response) => {
+    axios.post(`${process.env.VUE_APP_API_BASE_URL}/member`, params).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
             toast.success('Member Created Successfully', {
@@ -192,7 +192,7 @@ const createMember = () => {
         });
         emit('onSave');
         }else{
-            toast.error(responseData.message, {
+            toast.info(responseData.message, {
             timeout: 500,
             theme: 'colored'
         });

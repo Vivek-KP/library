@@ -4,12 +4,12 @@
         <div class="modal-dialog">
             <div class="modal-content bg-color">
                 <div class="modal-header ">
-                    <h5 class="modal-title font-color fs-5" id="exampleModalLabel">Delete Member</h5>
+                    <h5 class="modal-title font-color fs-5" id="exampleModalLabel">Delete Book</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
                         @click="onClose"></button>
                 </div>
                 <div class="modal-body font-color align-self-baseline pb-0">
-                    You are going to delete a member. Are you sure?
+                    You are going to delete a Book. Are you sure?
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" @click="onClose">
@@ -41,7 +41,7 @@ import { toast } from 'vue3-toastify'
 
 const props = defineProps({
     type: String,
-    memberId: Number,
+    bookId: Number,
     deleteSlider: {
         Boolean,
         default: false
@@ -69,16 +69,16 @@ const onClose = () => {
 }
 
 const onDelete = () => {
-    axios.delete(`http://127.0.0.1:5000/member?id=${props.memberId}`).then((response) => {
+    axios.delete(`${process.env.VUE_APP_API_BASE_URL}/book?id=${props.bookId}`).then((response) => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {
             emit('onDelete')
-            toast.success('Member Deleted Successfully', {
+            toast.success('Book Deleted Successfully', {
                 timeout: 500,
                 theme: 'colored'
             });
         } else {
-            toast.error(responseData.message, {
+            toast.info(responseData.message, {
                 timeout: 500,
                 theme: 'colored'
             });

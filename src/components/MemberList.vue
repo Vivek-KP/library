@@ -37,7 +37,7 @@
           </tbody>
           <tbody v-else>
             <tr>
-              <td align="center" class="p-5 text-secondary td-style" colspan="6"><span class="material-symbols-outlined">
+              <td align="center" class="p-5 text-secondary td-style" colspan="7"><span class="material-symbols-outlined">
                   hourglass_empty
                 </span>
                 <h5>No Members Yet</h5>
@@ -59,7 +59,7 @@ import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
 import MemberModel from '../sliderModel/MemberModel.vue'
 import MemberRow from '../components/MemberRow.vue';
-import DeleteSlider from '../sliderModel/DeleteSlider.vue'
+import DeleteSlider from '../sliderModel/MemberDeleteSlider.vue'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
 
@@ -82,7 +82,7 @@ const filterMember = computed({
   
 })
 const getAllMembers = () => {
-  axios.get('http://127.0.0.1:5000/member').then((response) => {
+  axios.get(`${process.env.VUE_APP_API_BASE_URL}/member`).then((response) => {
     const responseData = response.data
     memberList.value = responseData.data
    
@@ -146,9 +146,6 @@ onMounted(getAllMembers)
   border-top: 0;
 }
 
-.vue-toastification-container .vue-toastification__toast--success {
-  background-color: #4caf50; /* Custom success color */
-  color: #fff; /* Text color */
-}
+
 
 </style>

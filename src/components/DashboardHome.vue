@@ -70,18 +70,30 @@
               <th width="20%" class="td-style">Issued Book</th>
               <th class="td-style">Member Name</th>
               <th class="td-style">Issued Date</th>
-              <th class="td-style">Return Date  </th>
+              <th class="td-style">Return Date </th>
               <th class="td-style">Generated Fee</th>
               <th class="td-style">Return</th>
             </tr>
           </thead>
-          <tbody>
-              <IssueRow v-for="(issuedData,index) in issuedBookDetails" :key="issuedData.id" :issuedData='issuedData' :index='index+1' :issueType="issueType"  @onReturn="onReturn"  />
+          <tbody v-if="issuedBookDetails.length">
+            <IssueRow v-for="(issuedData, index) in issuedBookDetails" :key="issuedData.id" :issuedData='issuedData'
+              :index='index + 1' :issueType="issueType" @onReturn="onReturn" />
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td align="center" class="p-3 text-secondary td-style" colspan="7"><span
+                  class="material-symbols-outlined">
+                  hourglass_empty
+                </span>
+                <h5>No Details found</h5>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-      <IssueModel  :showSlider="showSlider"   @onSave="onSave" @onClose="onClose"/>
-      <ReturnModel :returnSlider="returnSlider" :assignedFee="assignedFee" type="MEMBER" :issueId="issueId" @on-close="onClose" @on-delete = "onSave"/>
+      <IssueModel :showSlider="showSlider" @onSave="onSave" @onClose="onClose" />
+      <ReturnModel :returnSlider="returnSlider" :assignedFee="assignedFee" type="MEMBER" :issueId="issueId"
+        @on-close="onClose" @on-delete="onSave" />
 
     </div>
   </div>
@@ -97,7 +109,8 @@ import ReturnModel from '../sliderModel/ReturnModel.vue'
 
 const dashboardData = ref('')
 const getDashboardData = () => {
-  axios.get('http://127.0.0.1:5000/dashboard').then(res => {
+  console.log('API Base URL:', `${process.env.VUE_APP_API_BASE_URL}`);
+  axios.get(`${process.env.VUE_APP_API_BASE_URL}/dashboard`).then(res => {
     const response = res.data
     dashboardData.value = response.data
   }).catch(() => {
@@ -108,11 +121,11 @@ onMounted(getDashboardData)
 
 
 const issuedBookDetails = ref([])
-const getIssuedBookDetail = ()=>{
-  axios.get('http://127.0.0.1:5000/issue').then(res=>{
+const getIssuedBookDetail = () => {
+  axios.get(`${process.env.VUE_APP_API_BASE_URL}/issue`).then(res => {
     const responsData = res.data
     issuedBookDetails.value = responsData.data
-  }).catch(()=>{
+  }).catch(() => {
 
   })
 }
@@ -143,7 +156,7 @@ const onSave = () => {
 
 }
 const issueId = ref()
-const onReturn =(id,fee)=>{
+const onReturn = (id, fee) => {
   issueId.value = id
   assignedFee.value = fee
   returnSlider.value = true
@@ -185,7 +198,7 @@ const onReturn =(id,fee)=>{
 }
 
 .card {
-    background-color: #1f1e2f;
-    border: none;
+  background-color: #1f1e2f;
+  border: none;
 }
 </style>

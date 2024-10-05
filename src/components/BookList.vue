@@ -7,15 +7,14 @@
                     v-model="searchBook">
             </div>
             <div class=" ps-3  d-flex justify-content-end ">
-                <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
+<!--                 <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
                     <div class="d-flex">
                         <span class="material-symbols-outlined fs-5 pe-1">download</span>
                         <span> Import Book</span>
 
                     </div>
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" @click="Slider('ADD')"
-                    data-bs-target="#bookModel">
+                </button> -->
+                <button type="button" class="btn btn-primary btn-sm" @click="Slider('ADD')">
                     <div class="d-flex">
                         <span class="material-symbols-outlined fs-5 pe-1">library_books</span>
                         <span> Add Book</span>
@@ -24,6 +23,7 @@
                 </button>
                 <!-- Modal -->
                 <BookModel :type="type" :showSlider="showSlider" :bookId="bookId" @onSave="onSave" @onClose="onClose" />
+                <DeleteSlider :deleteSlider="deleteSlider" type="BOOK" :bookId="bookId" @on-close="onClose" @on-delete = "onSave"/>
 
             </div>
 
@@ -72,6 +72,7 @@ import { computed, onMounted, ref } from 'vue';
 import BookModel from '../sliderModel/BookModel.vue'
 import BookRow from './BookRow.vue'
 import axios from 'axios';
+import DeleteSlider from '../sliderModel/BookDeleteSlider.vue'
 
 const type = ref('')
 const showSlider = ref(false)
@@ -95,7 +96,7 @@ const filterBook = computed({
 
 const getAllBooks = () => {
     console.log("mlkjn");
-    axios.get('http://127.0.0.1:5000/book').then((response) => {
+    axios.get(`${process.env.VUE_APP_API_BASE_URL}/book`).then((response) => {
         const responseData = response.data
         bookList.value = responseData.data
     }).catch(() => {
@@ -106,8 +107,8 @@ const getAllBooks = () => {
 
 const Slider = (value) => {
     bookId.value = 0
-    type.value = value
     showSlider.value = true
+    type.value = value
 }
 
 const onClose = () => {
@@ -116,6 +117,7 @@ const onClose = () => {
     bookId.value = ''
 
 }
+
 
 const onSave = () => {
     getAllBooks()
