@@ -5,17 +5,17 @@
       </div>
       <div class="sidebar-menu nav-bar p-3  nav flex-column nav-pills">
         <button class="btn btn-sm  mt-4" data-bs-toggle="tooltip" data-bs-placement="right" title="Home" @click="pageNav('HOME')">
-          <span class="material-symbols-outlined fs-2">
+          <span class="material-symbols-outlined fs-2" :class="navigationType==='HOME'?'icon-color':''">
             home
           </span>
         </button>
         <button class="btn btn-sm  mt-5" data-bs-toggle="tooltip" data-bs-placement="right" title="Books"  @click="pageNav('BOOK')">
-          <span class="material-symbols-outlined fs-2">
+          <span class="material-symbols-outlined fs-2" :class="navigationType==='BOOK'?'icon-color':''">
             book_2
           </span>
         </button>
         <button class="btn btn-sm  mt-5" data-bs-toggle="tooltip" data-bs-placement="right" title="Members"  @click="pageNav('MEMBER')">
-          <span class="material-symbols-outlined fs-2">
+          <span class="material-symbols-outlined fs-2" :class="navigationType==='MEMBER'?'icon-color':''">
             person
           </span>
         </button>
@@ -24,17 +24,17 @@
 
 </template>
 
-<script>
-export default {
-  name: 'SideBar',
+<script setup>
+import { ref,defineEmits } from 'vue';
 
-  methods:{
-    pageNav(navType){
-      this.$emit('navigate',navType)
-    }
-  }
- 
+const emit = defineEmits(['navigate'])
+const navigationType = ref('HOME')
+const pageNav = (navType) => {
+  navigationType.value = navType
+  emit('navigate',navType)
 }
+
+
 </script>
 
 <style scoped>
@@ -85,6 +85,12 @@ element.style {
 .material-symbols-outlined:hover{
   color: #4e74f3;
 }
+
+.icon-color{
+  color: #4e74f3;
+
+}
+
 
  
 </style>

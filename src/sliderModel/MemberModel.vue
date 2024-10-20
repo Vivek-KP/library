@@ -25,7 +25,7 @@
                                     email
                                 </span>
                                 <input class="text-white form-control w-100 border-1 input-field " id="name"
-                                    type="email" v-model="member.email" placeholder="Enter name"><br>
+                                    type="email" v-model="member.email" placeholder="Enter Email"><br>
                             </div>
                             <span v-if="v$.member.email.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Email is required</p>
@@ -121,16 +121,10 @@ const getAllMembers = () => {
             member.value = responseData.data
 
         }else{
-            toast.error(responseData.message, {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.error(responseData.message);
         }
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     })
 }
 
@@ -159,23 +153,14 @@ const updateMeber = () => {
     axios.put(`${process.env.VUE_APP_API_BASE_URL}/member`, params).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
-            toast.success('Member Updated Successfully', {
-            timeout: 100,
-            theme: 'colored'
-        });
+            toast.success('Member Updated Successfully');
             emit('onSave');
         }else{
-            toast.error(responseData.message, {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.error(responseData.message);
         }
         onClose()
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     });
 }
 const createMember = () => {
@@ -186,23 +171,14 @@ const createMember = () => {
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/member`, params).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
-            toast.success('Member Created Successfully', {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.success('Member Created Successfully');
         emit('onSave');
         }else{
-            toast.info(responseData.message, {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.info(responseData.message);
         }
         onClose()
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     });
 }
 const onClose = () => {

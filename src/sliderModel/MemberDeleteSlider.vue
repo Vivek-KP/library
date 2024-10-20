@@ -73,21 +73,12 @@ const onDelete = () => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {
             emit('onDelete')
-            toast.success('Member Deleted Successfully', {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.success('Member Deleted Successfully');
         } else {
-            toast.info(responseData.message, {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.info(responseData.message);
         }
         }).catch(() => {
-            toast.error('Something went wrong', {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.error('Something went wrong');
         })
 }
 onMounted(() => {

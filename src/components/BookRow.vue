@@ -1,17 +1,17 @@
 <template>
     <tr>
-        <td class="td-style">{{ index + 1 }}</td>
-        <td class="td-style">{{ book.title }}</td>
-        <td class="td-style">{{ book.author }}</td>
-        <td class="td-style">{{ book.publicationDate }}</td>
-        <td class="td-style">{{ book.publisher }}</td>
-        <td  class="td-style">{{ book.averageRating }}</td>
-        <td class="td-style">{{ book.stock }}</td>
-        <td class="td-style"><a href="#" class="card-refresh" data-toggle="refresh" @click="onEdit"><span
+        <td class="td-style mobile-display-none">{{ index + 1 }}</td>
+        <td data-label="Title" class="td-style">{{ book.title }}</td>
+        <td data-label="Author" class="td-style">{{ book.author }}</td>
+        <td data-label="Publication Date" class="td-style">{{ book.publicationDate }}</td>
+        <td data-label="Publisher" class="td-style">{{ book.publisher }}</td>
+        <td data-label="Rating" class="td-style">{{ book.averageRating }}</td>
+        <td data-label="Stock" class="td-style">{{ book.stock }}</td>
+        <td data-label="Edit" class="td-style"><a href="#" class="card-refresh" data-toggle="refresh" @click="onEdit"><span
                     class="material-symbols-outlined fs-5 text-primary">
                     edit
                 </span></a></td>
-        <td class="td-style"><a href="#" class="card-close" data-toggle="close" @click="onDelete"><span
+        <td data-label="Delete" class="td-style"><a href="#" class="card-close" data-toggle="close" @click="onDelete"><span
                     class="material-symbols-outlined fs-5 ps-1 text-danger">
                     delete
                 </span></a></td>

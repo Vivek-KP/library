@@ -1,19 +1,19 @@
 <template>
     <div class="ps-5">
-        <div class="d-flex justify-content-between  mb-3">
+        <div class="d-flex justify-content-between col-md-12  mb-3">
             <div class="d-flex input-container">
                 <span class="material-symbols-outlined font-color p-1">search</span>
                 <input class=" border-0 search-field text-white" placeholder=" Search Book or Author " type="text"
                     v-model="searchBook">
             </div>
             <div class=" ps-3  d-flex justify-content-end ">
-<!--                 <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
+                <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
                     <div class="d-flex">
                         <span class="material-symbols-outlined fs-5 pe-1">download</span>
                         <span> Import Book</span>
 
                     </div>
-                </button> -->
+                </button>
                 <button type="button" class="btn btn-primary btn-sm" @click="Slider('ADD')">
                     <div class="d-flex">
                         <span class="material-symbols-outlined fs-5 pe-1">library_books</span>
@@ -30,10 +30,10 @@
         </div>
         <div class="card shadow-sm">
             <div class="card-body table-responsive">
-                <table class="table table-hover table-dark">
+                <table class="table table-hover table-card table-dark">
                     <thead>
                         <tr>
-                            <th class="td-style">Sl no</th>
+                            <th class="td-style mobile-display-none">Sl no</th>
                             <th class="td-style" width="19%"> Title</th>
                             <th class="td-style">Author</th>
                             <th class="td-style">Publication Date</th>

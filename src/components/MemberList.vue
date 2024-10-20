@@ -1,27 +1,29 @@
 <template>
 
   <div class="ps-5">
-    <div class="d-flex justify-content-between  mb-3">
+    <div class="d-flex justify-content-between col-md-12  mb-3">
       <div class="d-flex input-container">
         <span class="material-symbols-outlined font-color p-1">search</span>
         <input class=" border-0 search-field text-white" placeholder=" Search Member " type="text" v-model="searchMember">
       </div>
-      <button type="button" class="btn btn-primary btn-sm" @click="Slider">
-        <div class="d-flex">
-          <span class="material-symbols-outlined fs-5 pe-1">person_add</span>
-          <span> Add Member</span>
-        </div>
-      </button>
+      <div>
+        <button type="button" class="btn btn-primary btn-sm" @click="Slider">
+          <div class="d-flex">
+            <span class="material-symbols-outlined fs-5 pe-1">person_add</span>
+            <span> Add Member</span>
+          </div>
+        </button>
+      </div>
       <!-- Modal -->
       <MemberModel :type="type" :showSlider="showSlider" :memberId="memberId" @onSave="onSave" @onClose="onClose" />
       <DeleteSlider :deleteSlider="deleteSlider" type="MEMBER" :memberId="memberId" @on-close="onClose" @on-delete = "onSave"/>
     </div>
     <div class="card shadow-sm">
-      <div class="card-body table-responsive">
-        <table class="table table-hover table-dark">
+      <div class="card-body">
+        <table class="table table-hover table-card table-dark">
           <thead>
             <tr style="background-color:#1f1e2f;">
-              <th class="td-style">Sl no</th>
+              <th class="td-style mobile-display-none">Sl no</th>
               <th class="td-style"> Member Name</th>
               <th class="td-style">Email</th>
               <th class="td-style">Joined Date</th>
@@ -87,10 +89,7 @@ const getAllMembers = () => {
     memberList.value = responseData.data
    
   }).catch(() => {
-    toast.error('Something went wrong', {
-    timeout: 500,
-    theme: 'colored'
-  });
+    toast.error('Something went wrong');
   })
 
 }

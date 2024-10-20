@@ -13,7 +13,7 @@
                         Member has a rental fee of amount {{ assignedFee }}/- Rupees.Is the payment successfull?
                     </span>
                     <span v-else>
-
+                        Are you sure want to continue
                     </span>
                 </div>
                 <div class="modal-footer border-0">
@@ -31,8 +31,10 @@
                             <span>Paid</span>
                         </div>
                         <div v-else>
-                            <span class="material-symbols-outlined fs-5 pe-1">autorenew</span>
-                            <span>Return</span>
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined fs-5 pe-1">autorenew</span>
+                                <span>Return</span>
+                            </div>
                         </div>
                     </button>
                 </div>
@@ -84,15 +86,9 @@ const onDelete = () => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {
             emit('onDelete')
-            toast.success('Book Returned Successfully', {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.success('Book Returned Successfully');
         } else {
-            toast.info(responseData.message, {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.info(responseData.message);
         }
     }).catch(() => {
         toast.error('Something went wrong', {

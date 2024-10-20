@@ -188,16 +188,10 @@ const getAllbooks = () => {
             book.value = responseData.data
 
         }else{
-            toast.info(responseData.message, {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.info(responseData.message);
         }
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     })
 }
 
@@ -219,46 +213,28 @@ const updateBook = () => {
     axios.put(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
-            toast.success('Book Updated Successfully', {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.success('Book Updated Successfully');
             emit('onSave');
         }else{
-            toast.info(responseData.message, {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.info(responseData.message);
         } 
         onClose();
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     });
 }
 const createbook = () => {
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
         if(responseData.status === 'SUCCESS'){
-            toast.success('Bood Added Successfully', {
-            timeout: 500,
-            theme: 'colored'
-        });
+            toast.success('Bood Added Successfully');
         emit('onSave');
         onClose()
         }else{
-            toast.info(responseData.message, {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.info(responseData.message);
         }
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     });
 }
 const onClose = () => {
@@ -269,8 +245,25 @@ const onClose = () => {
 }
 </script>
 
-<style scoped>
+<style>
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    box-shadow: 0 0 0px 1000px #1f1e2f inset !important; /* Background color */
+    -webkit-text-fill-color: white !important; /* Autofill text color */
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: white !important; /* Ensures the caret color remains white */
+}
 
+/* Ensures the text and caret remain white when focused or active */
+input:focus,
+input:active {
+    -webkit-text-fill-color: white !important; /* Text color */
+    color: white !important; /* Fallback for non-WebKit browsers */
+    box-shadow: 0 0 0px 1000px #1f1e2f inset !important; /* Background color */
+    caret-color: white !important; /* Forces the cursor to be white */
 
+}
 
 </style>

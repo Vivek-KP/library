@@ -17,7 +17,7 @@
                                 <select class=" form-select text-white form-control w-100 border-1 input-field"
                                     id="name" type="text" v-model="issueBookDetails.book.id" placeholder="Select Book">
                                     <option value="" disabled selected>Select Book</option>
-                                    <option v-for="book in bookList" :key="book.id" :value="book.id">{{ book.title }}
+                                    <option v-for="book in bookList" :key="book.id" :disabled="book.stock==0?true:false" :value="book.id">{{ book.title }}
                                     </option>
                                 </select><br>
                             </div>
@@ -146,7 +146,6 @@ onMounted(() => {
 })
 const memberList = ref([])
 const getAllMembers = () => {
-    console.log("mlkjn");
     console.log('API Base URL:', process.env.VUE_APP_API_BASE_URL);
     axios.get(`${process.env.VUE_APP_API_BASE_URL}/member`).then((response) => {
         const responseData = response.data
@@ -185,7 +184,7 @@ const getAllbooks = () => {
     axios.get(`${process.env.VUE_APP_API_BASE_URL}/book`).then((response) => {
         const responseData = response.data
 
-        bookList.value = responseData.data.filter(book => book.stock > 0)
+        bookList.value = responseData.data
     }).catch(() => {
 
     })
@@ -218,16 +217,10 @@ const updateIssuedDetails = (params) => {
     axios.put(`${process.env.VUE_APP_API_BASE_URL}/book`, params).then((response) => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {
-            toast.success('Book Issued Successfully', {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.success('Book Issued Successfully');
             emit('onSave');
         } else {
-            toast.info(responseData.message, {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.info(responseData.message);
         }
         onClose();
     }).catch(() => {
@@ -243,16 +236,10 @@ const cretaeBookIssue = (params) => {
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/issue`, params).then((response) => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {
-            toast.success('Book Issued Successfully', {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.success('Book Issued Successfully');
             emit('onSave');
         } else {
-            toast.info(responseData.message, {
-                timeout: 500,
-                theme: 'colored'
-            });
+            toast.info(responseData.message);
         }
         onClose();
     }).catch(() => {
