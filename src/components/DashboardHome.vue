@@ -1,110 +1,128 @@
 <template>
-  <div class="ps-5">
-    <div class="d-flex justify-content-evenly pb-5 mb-5">
-      <div class="card card1">
-        <div class="card-title pt-2">
-          <p>Total Books</p>
-        </div>
-        <div class="card-body p-0">
-          <span class="material-symbols-outlined icon-style">
-            book_2
-          </span>
-          <p>{{ dashboardData.bookCount }}</p>
-        </div>
+  <div class="d-flex flex-wrap justify-content-evenly mb-1">
+    <div class="card card1">
+      <div class="card-title pt-2">
+        <p>Total Books</p>
       </div>
-
-      <div class="card card2 ">
-        <div class="card-title pt-2">
-          <p>Total Members</p>
-        </div>
-        <div class="card-body p-0">
-          <span class="material-symbols-outlined icon-style">
-            group
-          </span>
-          <p>{{ dashboardData.memberCount }}</p>
-        </div>
+      <div class="card-body p-0">
+        <span class="material-symbols-outlined icon-style">
+          book_2
+        </span>
+        <p>{{ dashboardData.bookCount }}</p>
       </div>
-
-      <div class="card card3 ">
-        <div class="card-title pt-2">
-          <p>Issued Books</p>
-        </div>
-        <div class="card-body p-0">
-          <span class="material-symbols-outlined icon-style">
-            how_to_reg
-          </span>
-          <p>{{ dashboardData.issuedBookCount }}</p>
-        </div>
-      </div>
-
-      <div class="card card4 ">
-        <div class="card-title pt-2">
-          <p>Overdue Books</p>
-        </div>
-        <div class="card-body p-0">
-          <span class="material-symbols-outlined icon-style">
-            cycle
-          </span>
-          <p>{{ dashboardData.overDuebookCount }}</p>
-        </div>
-      </div>
-
     </div>
-    <div class="d-flex justify-content-end">
-      <button type="button" class="btn btn-primary btn-sm" @click="Slider">
-        <div class="d-flex">
-          <span class="material-symbols-outlined fs-5 pe-1">send</span>
-          <span> Issue a Book</span>
-        </div>
-      </button>
-    </div>
-    <div>
-      <h4 class="font-color">Issued Book Details</h4>
-    </div>
-    <div class="card shadow-sm mt-4">
-      <div class="card-body table-responsive">
-        <table class="table table-hover table-dark">
-          <thead>
-            <tr>
-              <th class="td-style">Sl No.</th>
-              <th width="20%" class="td-style">Issued Book</th>
-              <th class="td-style">Member Name</th>
-              <th class="td-style">Issued Date</th>
-              <th class="td-style">Return Date </th>
-              <th class="td-style">Generated Fee</th>
-              <th class="td-style">Return</th>
-            </tr>
-          </thead>
-          <tbody v-if="issuedBookDetails.length">
-            <IssueRow v-for="(issuedData, index) in issuedBookDetails" :key="issuedData.id" :issuedData='issuedData'
-              :index='index + 1' :issueType="issueType" @onReturn="onReturn" />
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <td align="center" class="p-3 text-secondary td-style" colspan="7"><span
-                  class="material-symbols-outlined">
-                  hourglass_empty
-                </span>
-                <h5>No Details found</h5>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <IssueModel :showSlider="showSlider" @onSave="onSave" @onClose="onClose" />
-      <ReturnModel :returnSlider="returnSlider" :assignedFee="assignedFee" type="MEMBER" :issueId="issueId"
-        @on-close="onClose" @on-delete="onSave" />
 
+    <div class="card card2 ">
+      <div class="card-title pt-2">
+        <p>Total Members</p>
+      </div>
+      <div class="card-body p-0">
+        <span class="material-symbols-outlined icon-style">
+          group
+        </span>
+        <p>{{ dashboardData.memberCount }}</p>
+      </div>
     </div>
+
+    <div class="card card3 ">
+      <div class="card-title pt-2">
+        <p>Issued Books</p>
+      </div>
+      <div class="card-body p-0">
+        <span class="material-symbols-outlined icon-style">
+          how_to_reg
+        </span>
+        <p>{{ dashboardData.issuedBookCount }}</p>
+      </div>
+    </div>
+
+    <div class="card card4 ">
+      <div class="card-title pt-2">
+        <p>Overdue Books</p>
+      </div>
+      <div class="card-body p-0">
+        <span class="material-symbols-outlined icon-style">
+          cycle
+        </span>
+        <p>{{ dashboardData.overDuebookCount }}</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+    <button type="button" class="btn btn-primary btn-sm" @click="Slider">
+      <div class="d-flex">
+        <span class="material-symbols-outlined fs-5 pe-1">send</span>
+        <span> Issue a Book</span>
+      </div>
+    </button>
+  </div>
+  <div>
+    <h4 class="font-color pt-3">Issued Book Details</h4>
+  </div>
+  <div class="d-flex input-container">
+    <span class="material-symbols-outlined font-color p-1">search</span>
+    <input class=" border-0 search-field text-white" placeholder=" Search Book or Member" type="text"
+      v-model="searchBook">
+  </div>
+  <div class="card shadow-sm mt-4" style="max-height: 50vh;">
+    <div class=" table-responsive">
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th class="td-style">Sl No.</th>
+            <th width="20%" class="td-style">Issued Book</th>
+            <th class="td-style">Member Name</th>
+            <th class="td-style">Issued Date</th>
+            <th class="td-style">Return Date </th>
+            <th class="td-style">Generated Fee</th>
+            <th class="td-style">Return</th>
+          </tr>
+        </thead>
+        <tbody v-if="filterIssuedBook.length">
+          <IssueRow v-for="(issuedData, index) in filterIssuedBook" :key="issuedData.id" :issuedData='issuedData'
+            :index='index + 1' :issueType="issueType" @onReturn="onReturn" />
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td align="center" class="p-3 text-secondary td-style" colspan="7"><span class="material-symbols-outlined">
+                hourglass_empty
+              </span>
+              <h5>No Details found</h5>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <IssueModel :showSlider="showSlider" @onSave="onSave" @onClose="onClose" />
+    <ReturnModel :returnSlider="returnSlider" :assignedFee="assignedFee" type="MEMBER" :issueId="issueId"
+      @on-close="onClose" @on-delete="onSave" />
+
   </div>
 </template>
 
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import IssueModel from '@/sliderModel/IssueModel.vue';
 import IssueRow from './IssueRow.vue';
 import ReturnModel from '../sliderModel/ReturnModel.vue'
+
+
+const searchBook = ref('')
+const filterIssuedBook = computed({
+  get() {
+    if (searchBook.value != '') {
+
+      return issuedBookDetails.value.filter(book => (book.book.title.toLowerCase().includes(searchBook.value) || book.member.name.toLowerCase().includes(searchBook.value)))
+    } else {
+      return issuedBookDetails.value
+
+    }
+  }
+
+})
+
 
 
 const dashboardData = ref('')
@@ -166,8 +184,9 @@ const onReturn = (id, fee) => {
 
 <style scoped>
 .card {
-  min-width: 15%;
+  min-width: 180px;
   border: none;
+  margin-bottom: 10px;
 
 }
 

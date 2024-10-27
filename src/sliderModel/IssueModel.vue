@@ -17,7 +17,8 @@
                                 <select class=" form-select text-white form-control w-100 border-1 input-field"
                                     id="name" type="text" v-model="issueBookDetails.book.id" placeholder="Select Book">
                                     <option value="" disabled selected>Select Book</option>
-                                    <option v-for="book in bookList" :key="book.id" :disabled="book.stock==0?true:false" :value="book.id">{{ book.title }}
+                                    <option :title="book.title" v-for="book in bookList" :key="book.id"
+                                        :disabled="book.stock == 0 ? true : false" :value="book.id">{{ truncate(book.title) }}
                                     </option>
                                 </select><br>
                             </div>
@@ -259,6 +260,14 @@ const onClose = () => {
 
     emit('onClose')
     modalInstance.value.hide();
+}
+
+const truncate = (text) => {
+    if (text.length >= 50) {
+        return text.slice(0, 50) + '...'
+    } else {
+        return text
+    }
 }
 </script>
 

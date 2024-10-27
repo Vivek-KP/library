@@ -13,7 +13,7 @@
                         Member has a rental fee of amount {{ assignedFee }}/- Rupees.Is the payment successfull?
                     </span>
                     <span v-else>
-                        Are you sure want to continue
+                        Are you sure want to continue?
                     </span>
                 </div>
                 <div class="modal-footer border-0">

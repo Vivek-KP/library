@@ -4,8 +4,9 @@
             <div class="modal-content bg-color">
                 <form @submit.prevent="decideProcess">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title font-color ps-2">{{ type }} BOOK</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"  @click="onClose"></button>
+                        <h5 class="modal-title font-color ps-2">{{ actionType }} BOOK</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close" @click="onClose"></button>
                     </div>
                     <div class="modal-body border-0 ">
                         <form class=" w-100 pe-2 ps-2">
@@ -29,12 +30,13 @@
                             <span v-if="v$.book.author.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Author is required</p>
                             </span>
-                            <div class="d-flex mt-4" v-if="type !== 'IMPORT'">
+                            <div class="d-flex mt-4" v-if="actionType !== 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     calendar_month
                                 </span>
-                                <Flatpicker class="text-white form-control w-100 border-1 input-field" 
-                                v-model="book.publicationDate" :config="config" placeholder="Enter publication date" ></Flatpicker><br>
+                                <Flatpicker class="text-white form-control w-100 border-1 input-field"
+                                    v-model="book.publicationDate" :config="config"
+                                    placeholder="Enter publication date"></Flatpicker><br>
                             </div>
                             <div class="d-flex mt-4">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
@@ -55,28 +57,30 @@
                             <span v-if="v$.book.isbn.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* ISBN is required</p>
                             </span>
-                            <div class="d-flex mt-4" v-if="type === 'IMPORT'">
+                            <div class="d-flex mt-4" v-if="actionType === 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     pin
                                 </span>
                                 <input class="text-white form-control w-100 border-1 input-field" id="email" type="text"
-                                    v-model="userEmail" placeholder="Enter no. of books want to import"><br>
-
+                                    v-model="book.importCount" placeholder="Enter no. of books want to import"><br>
                             </div>
-                            <div class="d-flex mt-4" v-if="type !== 'IMPORT'">
+                            <span v-if="v$.book.importCount.$error" class="text-danger">
+                                <p class="fs-6 text-start ps-4">* Count is required</p>
+                            </span>
+                            <div class="d-flex mt-4" v-if="actionType !== 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     star_half
                                 </span>
-                                <input class="text-white form-control w-100 border-1 input-field" id="email" type="number"
-                                    v-model="book.averageRating" placeholder="Enter Rating"><br>
+                                <input class="text-white form-control w-100 border-1 input-field" id="email"
+                                    type="number" v-model="book.averageRating" placeholder="Enter Rating"><br>
 
                             </div>
-                            <div class="d-flex mt-4" v-if="type !== 'IMPORT'">
+                            <div class="d-flex mt-4" v-if="actionType !== 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     stacks
                                 </span>
-                                <input class="text-white form-control w-100 border-1 input-field" id="email" type="number"
-                                    v-model="book.stock" placeholder="Enter stock"><br>
+                                <input class="text-white form-control w-100 border-1 input-field" id="email"
+                                    type="number" v-model="book.stock" placeholder="Enter stock"><br>
                             </div>
                             <span v-if="v$.book.stock.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Stock is required</p>
@@ -84,7 +88,7 @@
                         </form>
                     </div>
                     <div class="modal-footer  border-0">
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"  @click="onClose">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" @click="onClose">
                             <div class="d-flex">
                                 <span class="material-symbols-outlined fs-5">
                                     close
@@ -94,8 +98,9 @@
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary">
                             <div class="d-flex">
-                                <span class="material-symbols-outlined fs-5 pe-1">check</span>
-                                <span>Save</span>
+                                <span
+                                    class="material-symbols-outlined fs-5 pe-1">{{ actionType === 'IMPORT' ? 'download' : 'check' }}</span>
+                                <span>{{ actionType === 'IMPORT' ? 'Import' : 'Save' }}</span>
 
                             </div>
                         </button>
@@ -112,11 +117,11 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
 import Flatpicker from 'vue-flatpickr-component'
 import { defineProps, defineEmits, ref, onMounted, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
-import {toast} from 'vue3-toastify'
+import { requiredIf } from '@vuelidate/validators';
+import { toast } from 'vue3-toastify'
 
 const props = defineProps({
-    type: String,
+    actionType: String,
     bookId: Number,
     showSlider: {
         Boolean,
@@ -130,25 +135,28 @@ let modalInstance = ref(null)
 // const modalInstanc = ref(null)
 const book = ref({
     title: '',
-    author : '',
-    averageRating :  '',
-    isbn :  '',
-    stock : '',
-    publicationDate :   '',
-    publisher : ''
+    author: '',
+    averageRating: '',
+    isbn: '',
+    stock: '',
+    publicationDate: '',
+    publisher: '',
+    importCount: ''
 })
 const config = ref({
-        altFormat: 'M j, Y',
-        dateFormat: 'd-m-Y',       
-    });
+    altFormat: 'M j, Y',
+    dateFormat: 'd-m-Y',
+});
 
 const modal = ref(null)
 const rules = {
     book: {
-    title:  { required },
-    author :  { required },
-    isbn :  { required },
-    stock :  { required },
+        title: { required: requiredIf(() => { return props.actionType === 'ADD' }) },
+        author: { required: requiredIf(() => { return props.actionType === 'ADD' }) },
+        isbn: { required: requiredIf(() => { return props.actionType === 'ADD' }) },
+        stock: { required: requiredIf(() => { return props.actionType === 'ADD' }) },
+        importCount: { required: requiredIf(() => { return props.actionType === 'IMPORT' }) },
+
     }
 
 }
@@ -172,7 +180,7 @@ onMounted(() => {
     });
 
 watch(() => props.bookId, () => {
-    if (props.bookId > 0 && props.type == 'EDIT') {
+    if (props.bookId > 0 && props.actionType == 'EDIT') {
         getAllbooks()
 
     }
@@ -184,10 +192,10 @@ watch(() => props.bookId, () => {
 const getAllbooks = () => {
     axios.get(`${process.env.VUE_APP_API_BASE_URL}/book?id=${props.bookId}`).then((response) => {
         const responseData = response.data
-        if(responseData.status === 'SUCCESS'){
+        if (responseData.status === 'SUCCESS') {
             book.value = responseData.data
 
-        }else{
+        } else {
             toast.info(responseData.message);
         }
     }).catch(() => {
@@ -196,28 +204,42 @@ const getAllbooks = () => {
 }
 
 const decideProcess = () => {
+    console.log("des");
+
     v$.value.$touch()
     if (!v$.value.$invalid) {
-        if (props.bookId) {
-            updateBook();
+        if (props.actionType != 'IMPORT') {
+            if (props.bookId) {
+                console.log('valid1');
+
+                updateBook();
+            } else {
+                console.log('valid2');
+
+                createbook();
+            }
         } else {
-            createbook();
+            console.log("imp");
+
+            importBooks()
         }
     } else {
+        console.log('valid');
+
         return false
     }
 }
 
 const updateBook = () => {
-   
+
     axios.put(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
-        if(responseData.status === 'SUCCESS'){
+        if (responseData.status === 'SUCCESS') {
             toast.success('Book Updated Successfully');
             emit('onSave');
-        }else{
+        } else {
             toast.info(responseData.message);
-        } 
+        }
         onClose();
     }).catch(() => {
         toast.error("Something went wrong");
@@ -226,11 +248,11 @@ const updateBook = () => {
 const createbook = () => {
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
-        if(responseData.status === 'SUCCESS'){
+        if (responseData.status === 'SUCCESS') {
             toast.success('Bood Added Successfully');
-        emit('onSave');
-        onClose()
-        }else{
+            emit('onSave');
+            onClose()
+        } else {
             toast.info(responseData.message);
         }
     }).catch(() => {
@@ -243,27 +265,57 @@ const onClose = () => {
     emit('onClose')
     modalInstance.value.hide();
 }
+
+const importBooks = () => {
+    const params = {
+        title: book.value.title ?? '',
+        author: book.value.author ?? '',
+        publisher: book.value.publisher ?? '',
+        isbn: book.value.isbn ?? '',
+        bookCount: book.value.importCount ?? ''
+    }
+    console.log(params);
+
+    axios.post(`${process.env.VUE_APP_API_BASE_URL}/book/import`, params).then((response) => {
+        const responseData = response.data
+        if (responseData.status === 'SUCCESS') {
+            toast.success('Bood Imported Successfully');
+            emit('onSave');
+            onClose()
+        } else {
+            toast.info(responseData.message);
+        }
+    }).catch(() => {
+        toast.error("Something went wrong");
+    });
+}
 </script>
 
-<style>
+<style scoped>
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    box-shadow: 0 0 0px 1000px #1f1e2f inset !important; /* Background color */
-    -webkit-text-fill-color: white !important; /* Autofill text color */
+    box-shadow: 0 0 0px 1000px #1f1e2f inset !important;
+    /* Background color */
+    -webkit-text-fill-color: white !important;
+    /* Autofill text color */
     transition: background-color 5000s ease-in-out 0s;
-    caret-color: white !important; /* Ensures the caret color remains white */
+    caret-color: white !important;
+    /* Ensures the caret color remains white */
 }
 
 /* Ensures the text and caret remain white when focused or active */
 input:focus,
 input:active {
-    -webkit-text-fill-color: white !important; /* Text color */
-    color: white !important; /* Fallback for non-WebKit browsers */
-    box-shadow: 0 0 0px 1000px #1f1e2f inset !important; /* Background color */
-    caret-color: white !important; /* Forces the cursor to be white */
+    -webkit-text-fill-color: white !important;
+    /* Text color */
+    color: white !important;
+    /* Fallback for non-WebKit browsers */
+    box-shadow: 0 0 0px 1000px #1f1e2f inset !important;
+    /* Background color */
+    caret-color: white !important;
+    /* Forces the cursor to be white */
 
 }
-
 </style>

@@ -1,10 +1,11 @@
 <template>
 
-  <div class="ps-5">
-    <div class="d-flex justify-content-between col-md-12  mb-3">
+  <div class="">
+    <div class="d-flex flex-wrap justify-content-between col-md-12  mb-3">
       <div class="d-flex input-container">
         <span class="material-symbols-outlined font-color p-1">search</span>
-        <input class=" border-0 search-field text-white" placeholder=" Search Member " type="text" v-model="searchMember">
+        <input class=" border-0 search-field text-white" placeholder=" Search Member " type="text"
+          v-model="searchMember">
       </div>
       <div>
         <button type="button" class="btn btn-primary btn-sm" @click="Slider">
@@ -16,11 +17,12 @@
       </div>
       <!-- Modal -->
       <MemberModel :type="type" :showSlider="showSlider" :memberId="memberId" @onSave="onSave" @onClose="onClose" />
-      <DeleteSlider :deleteSlider="deleteSlider" type="MEMBER" :memberId="memberId" @on-close="onClose" @on-delete = "onSave"/>
+      <DeleteSlider :deleteSlider="deleteSlider" type="MEMBER" :memberId="memberId" @on-close="onClose"
+        @on-delete="onSave" />
     </div>
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <table class="table table-hover table-card table-dark">
+    <div class="card p-2 shadow-sm">
+      <div class="card  table-responsive">
+        <table class="table table-hover table-dark ">
           <thead>
             <tr style="background-color:#1f1e2f;">
               <th class="td-style mobile-display-none">Sl no</th>
@@ -39,7 +41,8 @@
           </tbody>
           <tbody v-else>
             <tr>
-              <td align="center" class="p-5 text-secondary td-style" colspan="7"><span class="material-symbols-outlined">
+              <td align="center" class="p-5 text-secondary td-style" colspan="7"><span
+                  class="material-symbols-outlined">
                   hourglass_empty
                 </span>
                 <h5>No Members Yet</h5>
@@ -47,7 +50,6 @@
             </tr>
           </tbody>
         </table>
-
       </div>
 
     </div>
@@ -72,22 +74,22 @@ const memberList = ref([])
 const searchMember = ref('')
 
 const filterMember = computed({
-    get(){
-      if(searchMember.value != ''){
+  get() {
+    if (searchMember.value != '') {
 
-        return memberList.value.filter(mem=>mem.name.toLowerCase().includes(searchMember.value))
-      }else{
-        return memberList.value
+      return memberList.value.filter(mem => mem.name.toLowerCase().includes(searchMember.value))
+    } else {
+      return memberList.value
 
-      }
     }
-  
+  }
+
 })
 const getAllMembers = () => {
   axios.get(`${process.env.VUE_APP_API_BASE_URL}/member`).then((response) => {
     const responseData = response.data
     memberList.value = responseData.data
-   
+
   }).catch(() => {
     toast.error('Something went wrong');
   })
@@ -101,7 +103,7 @@ const Slider = () => {
 const onClose = () => {
   showSlider.value = false
   deleteSlider.value = false
-  memberId.value=''
+  memberId.value = ''
 
 }
 const onSave = () => {
@@ -131,20 +133,16 @@ onMounted(getAllMembers)
 </script>
 
 <style scoped>
-
-
 .card {
   background-color: #1f1e2f;
   border: none;
+  border-radius: 12px;
 }
 
-.input-container{
-  border: 1px solid  #6d6d6e;
+.input-container {
+  border: 1px solid #6d6d6e;
   border-left: 0;
   border-right: 0;
   border-top: 0;
 }
-
-
-
 </style>

@@ -77,9 +77,9 @@ const onDelete = () => {
         } else {
             toast.info(responseData.message);
         }
-        }).catch(() => {
-            toast.error('Something went wrong');
-        })
+    }).catch(() => {
+        toast.error('Something went wrong');
+    })
 }
 onMounted(() => {
     modalInstance.value = new bootstrapBundleMin.Modal(deleteModel.value);

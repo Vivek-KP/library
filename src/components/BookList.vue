@@ -1,41 +1,45 @@
 <template>
-    <div class="ps-5">
-        <div class="d-flex justify-content-between col-md-12  mb-3">
-            <div class="d-flex input-container">
-                <span class="material-symbols-outlined font-color p-1">search</span>
-                <input class=" border-0 search-field text-white" placeholder=" Search Book or Author " type="text"
-                    v-model="searchBook">
-            </div>
-            <div class=" ps-3  d-flex justify-content-end ">
-                <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
-                    <div class="d-flex">
-                        <span class="material-symbols-outlined fs-5 pe-1">download</span>
-                        <span> Import Book</span>
 
-                    </div>
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" @click="Slider('ADD')">
-                    <div class="d-flex">
-                        <span class="material-symbols-outlined fs-5 pe-1">library_books</span>
-                        <span> Add Book</span>
+    <div class="d-flex justify-content-between flex-wrap col-md-12  mb-3">
+        <div class="d-flex input-container">
+            <span class="material-symbols-outlined font-color p-1">search</span>
+            <input class=" border-0 search-field text-white" placeholder=" Search Book or Author " type="text"
+                v-model="searchBook">
+        </div>
+        <div class=" ps-3  d-flex justify-content-end ">
+            <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
+                <div class="d-flex">
+                    <span class="material-symbols-outlined fs-5 pe-1">download</span>
+                    <span> Import Book</span>
 
-                    </div>
-                </button>
-                <!-- Modal -->
-                <BookModel :type="type" :showSlider="showSlider" :bookId="bookId" @onSave="onSave" @onClose="onClose" />
-                <DeleteSlider :deleteSlider="deleteSlider" type="BOOK" :bookId="bookId" @on-close="onClose" @on-delete = "onSave"/>
+                </div>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" @click="Slider('ADD')">
+                <div class="d-flex">
+                    <span class="material-symbols-outlined fs-5 pe-1">library_books</span>
+                    <span> Add Book</span>
 
-            </div>
+                </div>
+            </button>
+            <!-- Modal -->
+            <BookModel :actionType="type" :showSlider="showSlider" :bookId="bookId" @onSave="onSave"
+                @onClose="onClose" />
+            <DeleteSlider :deleteSlider="deleteSlider" type="BOOK" :bookId="bookId" @on-close="onClose"
+                @on-delete="onSave" />
 
         </div>
-        <div class="card shadow-sm">
-            <div class="card-body table-responsive">
-                <table class="table table-hover table-card table-dark">
+
+    </div>
+    <div class="card p-2 shadow-sm">
+        <div class="card ">
+            <div class=" table-responsive" style="max-height: 70vh;">
+                <table class="table table-hover table-dark">
                     <thead>
                         <tr>
-                            <th class="td-style mobile-display-none">Sl no</th>
-                            <th class="td-style" width="19%"> Title</th>
-                            <th class="td-style">Author</th>
+                            <th class="td-style"><input type="checkbox" v-model="rowChecked"></th>
+                            <th width="3%" class="td-style mobile-display-none">Sl no</th>
+                            <th align="left" class="td-style" width="23%"> Title</th>
+                            <th align="left" width="15%" class="td-style">Author</th>
                             <th class="td-style">Publication Date</th>
                             <th class="td-style">Publisher</th>
                             <th class="td-style">Rating</th>
@@ -45,8 +49,8 @@
                         </tr>
                     </thead>
                     <tbody v-if="filterBook.length">
-                        <BookRow v-for="(book, index) in filterBook" :key="book.id" :index="index" :book="book"
-                            @onEdit="onEdit" @onDelete="decideDelete" />
+                        <BookRow v-for="(book, index) in filterBook" :row-checked="rowChecked" :key="book.id" :index="index" :book="book"
+                            @onEdit="onEdit" @onDelete="decideDelete" @onRowSeleted ="onRowSeleted"/>
                     </tbody>
                     <tbody v-else>
                         <tr>
@@ -63,34 +67,36 @@
             </div>
 
         </div>
-
     </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import BookModel from '../sliderModel/BookModel.vue'
 import BookRow from './BookRow.vue'
 import axios from 'axios';
 import DeleteSlider from '../sliderModel/BookDeleteSlider.vue'
+
 
 const type = ref('')
 const showSlider = ref(false)
 const bookId = ref(0)
 const bookList = ref([])
 const searchBook = ref("")
+const rowChecked = ref(false)
+const idGoingToDelete = ref([])
 
 const filterBook = computed({
-    get(){
-      if(searchBook.value != ''){
+    get() {
+        if (searchBook.value != '') {
 
-        return bookList.value.filter(book=>(book.title.toLowerCase().includes(searchBook.value) || book.author.toLowerCase().includes(searchBook.value)))
-      }else{
-        return bookList.value
+            return bookList.value.filter(book => (book.title.toLowerCase().includes(searchBook.value) || book.author.toLowerCase().includes(searchBook.value)))
+        } else {
+            return bookList.value
 
-      }
+        }
     }
-  
+
 })
 
 
@@ -118,7 +124,6 @@ const onClose = () => {
 
 }
 
-
 const onSave = () => {
     getAllBooks()
     onClose()
@@ -140,6 +145,41 @@ const decideDelete = (book_Id) => {
 
 }
 
+const onRowSeleted = (bookId,selected)=>{
+    console.log(bookId,selected);
+    
+    if(selected && !rowChecked.value){
+        idGoingToDelete.value.push(bookId)
+        console.log(idGoingToDelete.value);
+        
+    }else{
+        const index = idGoingToDelete.value.indexOf(bookId)
+        if(index!== -1){
+            idGoingToDelete.value.splice(index,1)
+
+        }
+    }
+}
+
+watch(()=>rowChecked.value , (newVal)=>{
+    console.log("watch this" ,newVal);
+    
+    if(newVal){
+        bookList.value.forEach((book)=>{
+            if(!idGoingToDelete.value.includes(book.id)){
+                idGoingToDelete.value.push(book.id)
+            }
+          
+        })
+        console.log(idGoingToDelete.value);
+        
+    }else{
+
+    idGoingToDelete.value = []
+    }
+
+})
+
 onMounted(getAllBooks)
 </script>
 
@@ -153,10 +193,10 @@ onMounted(getAllBooks)
     border: none;
 }
 
-.input-container{
-  border: 1px solid  #6d6d6e;
-  border-left: 0;
-  border-right: 0;
-  border-top: 0;
+.input-container {
+    border: 1px solid #6d6d6e;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
 }
 </style>

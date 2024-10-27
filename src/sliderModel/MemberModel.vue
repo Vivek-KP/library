@@ -14,8 +14,8 @@
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     person
                                 </span>
-                                <input class="text-white form-control w-100 border-1 input-field " id="name"
-                                    type="text" v-model="member.name" placeholder="Enter name"><br>
+                                <input class="text-white form-control w-100 border-1 input-field " id="name" type="text"
+                                    v-model="member.name" placeholder="Enter name"><br>
                             </div>
                             <span v-if="v$.member.name.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Name is required</p>
@@ -117,10 +117,10 @@ const v$ = useVuelidate(rules, { member })
 const getAllMembers = () => {
     axios.get(`${process.env.VUE_APP_API_BASE_URL}/member?id=${props.memberId}`).then((response) => {
         const responseData = response.data
-        if(responseData.status === 'SUCCESS'){
+        if (responseData.status === 'SUCCESS') {
             member.value = responseData.data
 
-        }else{
+        } else {
             toast.error(responseData.message);
         }
     }).catch(() => {
@@ -152,10 +152,10 @@ const updateMeber = () => {
     };
     axios.put(`${process.env.VUE_APP_API_BASE_URL}/member`, params).then((response) => {
         const responseData = response.data
-        if(responseData.status === 'SUCCESS'){
+        if (responseData.status === 'SUCCESS') {
             toast.success('Member Updated Successfully');
             emit('onSave');
-        }else{
+        } else {
             toast.error(responseData.message);
         }
         onClose()
@@ -170,10 +170,10 @@ const createMember = () => {
     };
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/member`, params).then((response) => {
         const responseData = response.data
-        if(responseData.status === 'SUCCESS'){
+        if (responseData.status === 'SUCCESS') {
             toast.success('Member Created Successfully');
-        emit('onSave');
-        }else{
+            emit('onSave');
+        } else {
             toast.info(responseData.message);
         }
         onClose()
