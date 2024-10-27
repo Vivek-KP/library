@@ -49,7 +49,16 @@
     </div>
 
   </div>
-  <div class="d-flex justify-content-end mt-3">
+  <div>
+    <h4 class="font-color pt-3">Issued Book Details</h4>
+  </div>
+  <div class="d-flex flex-wrap justify-content-between">
+    <div class="d-flex input-container">
+      <span class="material-symbols-outlined font-color p-1">search</span>
+      <input class=" border-0 search-field text-white" placeholder=" Search Book or Member" type="text"
+        v-model="searchBook">
+    </div>
+    <div>
     <button type="button" class="btn btn-primary btn-sm" @click="Slider">
       <div class="d-flex">
         <span class="material-symbols-outlined fs-5 pe-1">send</span>
@@ -57,42 +66,38 @@
       </div>
     </button>
   </div>
-  <div>
-    <h4 class="font-color pt-3">Issued Book Details</h4>
   </div>
-  <div class="d-flex input-container">
-    <span class="material-symbols-outlined font-color p-1">search</span>
-    <input class=" border-0 search-field text-white" placeholder=" Search Book or Member" type="text"
-      v-model="searchBook">
-  </div>
-  <div class="card shadow-sm mt-4" style="max-height: 50vh;">
-    <div class=" table-responsive">
-      <table class="table table-hover table-dark">
-        <thead>
-          <tr>
-            <th class="td-style">Sl No.</th>
-            <th width="20%" class="td-style">Issued Book</th>
-            <th class="td-style">Member Name</th>
-            <th class="td-style">Issued Date</th>
-            <th class="td-style">Return Date </th>
-            <th class="td-style">Generated Fee</th>
-            <th class="td-style">Return</th>
-          </tr>
-        </thead>
-        <tbody v-if="filterIssuedBook.length">
-          <IssueRow v-for="(issuedData, index) in filterIssuedBook" :key="issuedData.id" :issuedData='issuedData'
-            :index='index + 1' :issueType="issueType" @onReturn="onReturn" />
-        </tbody>
-        <tbody v-else>
-          <tr>
-            <td align="center" class="p-3 text-secondary td-style" colspan="7"><span class="material-symbols-outlined">
-                hourglass_empty
-              </span>
-              <h5>No Details found</h5>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="card shadow-sm mt-3">
+    <div class="card">
+      <div class=" table-responsive"  style="max-height: 50vh;">
+        <table class="table table-hover table-dark">
+          <thead>
+            <tr>
+              <th class="td-style">Sl No.</th>
+              <th width="20%" class="td-style">Issued Book</th>
+              <th class="td-style">Member Name</th>
+              <th class="td-style">Issued Date</th>
+              <th class="td-style">Return Date </th>
+              <th class="td-style">Generated Fee</th>
+              <th class="td-style">Return</th>
+            </tr>
+          </thead>
+          <tbody v-if="filterIssuedBook.length">
+            <IssueRow v-for="(issuedData, index) in filterIssuedBook" :key="issuedData.id" :issuedData='issuedData'
+              :index='index + 1' :issueType="issueType" @onReturn="onReturn" />
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td align="center" class="p-3 text-secondary td-style" colspan="7"><span class="material-symbols-outlined">
+                  hourglass_empty
+                </span>
+                <h5>No Details found</h5>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
     <IssueModel :showSlider="showSlider" @onSave="onSave" @onClose="onClose" />
     <ReturnModel :returnSlider="returnSlider" :assignedFee="assignedFee" type="MEMBER" :issueId="issueId"
@@ -219,5 +224,6 @@ const onReturn = (id, fee) => {
 .card {
   background-color: #1f1e2f;
   border: none;
+  border-radius: 12px;
 }
 </style>

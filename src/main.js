@@ -14,7 +14,7 @@ const app = createApp(App);
 app.use(router)
 
 const toastOptions = {
-    autoClose: 1000, 
+    autoClose: 1500, 
     theme: 'colored',
     hideProgressBar:true
 }

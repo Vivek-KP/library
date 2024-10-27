@@ -160,13 +160,16 @@ onMounted(getAllMembers)
 
 watch(() => props.showSlider, (newVal) => {
     if (newVal) {
-        console.log("true");
+        console.log("true123");
+        getAllbooks()
         modalInstance.value.show();
+
     } else {
         console.log("false");
         // modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
         modalInstance.value.hide();
     }
+
 });
 
 watch(() => props.bookId, () => {
@@ -186,6 +189,8 @@ const getAllbooks = () => {
         const responseData = response.data
 
         bookList.value = responseData.data
+        console.log(bookList.value);
+        
     }).catch(() => {
 
     })
@@ -207,7 +212,7 @@ const decideProcess = () => {
         if (props.bookId) {
             updateIssuedDetails(params);
         } else {
-            cretaeBookIssue(params);
+            createBookIssue(params);
         }
     } else {
         return false
@@ -231,7 +236,7 @@ const updateIssuedDetails = (params) => {
         });
     });
 }
-const cretaeBookIssue = (params) => {
+const createBookIssue = (params) => {
     console.log(params);
 
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/issue`, params).then((response) => {
@@ -255,7 +260,7 @@ const onClose = () => {
     issueBookDetails.value.book.id = ""
     issueBookDetails.value.member.id = ""
     issueBookDetails.value.issueDate = ""
-    issueBookDetails.value.returnDate
+    issueBookDetails.value.returnDate = ""
     v$.value.$reset();
 
     emit('onClose')

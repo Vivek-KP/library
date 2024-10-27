@@ -46,7 +46,7 @@
                                     v-model="book.publisher" placeholder="Enter publisher"><br>
 
                             </div>
-                            <div class="d-flex mt-4">
+                            <div class="d-flex mt-4" v-if="actionType !== 'IMPORT'">
                                 <span class="material-symbols-outlined me-2 pt-2 text-primary">
                                     book
                                 </span>
@@ -98,8 +98,8 @@
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary">
                             <div class="d-flex">
-                                <span
-                                    class="material-symbols-outlined fs-5 pe-1">{{ actionType === 'IMPORT' ? 'download' : 'check' }}</span>
+                                <span class="material-symbols-outlined fs-5 pe-1">{{ actionType === 'IMPORT' ?
+                                    'download' : 'check' }}</span>
                                 <span>{{ actionType === 'IMPORT' ? 'Import' : 'Save' }}</span>
 
                             </div>
@@ -291,31 +291,6 @@ const importBooks = () => {
 }
 </script>
 
-<style scoped>
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    box-shadow: 0 0 0px 1000px #1f1e2f inset !important;
-    /* Background color */
-    -webkit-text-fill-color: white !important;
-    /* Autofill text color */
-    transition: background-color 5000s ease-in-out 0s;
-    caret-color: white !important;
-    /* Ensures the caret color remains white */
-}
+<style>
 
-/* Ensures the text and caret remain white when focused or active */
-input:focus,
-input:active {
-    -webkit-text-fill-color: white !important;
-    /* Text color */
-    color: white !important;
-    /* Fallback for non-WebKit browsers */
-    box-shadow: 0 0 0px 1000px #1f1e2f inset !important;
-    /* Background color */
-    caret-color: white !important;
-    /* Forces the cursor to be white */
-
-}
 </style>

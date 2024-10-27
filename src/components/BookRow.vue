@@ -1,6 +1,5 @@
 <template>
     <tr>
-        <td class="td-style"><input type="checkbox" :id="book.id" @click="onRowSelected" :name="book.id" v-model="checked"></td>
         <td class="td-style mobile-display-none">{{ index + 1 }}</td>
         <td align="left" data-label="Title" class="td-style ps-5">{{ book.title }}</td>
         <td align="left" data-label="Author" class="td-style ps-5">{{ book.author }}</td>
@@ -21,19 +20,15 @@
 
 
 <script setup>
-import { defineProps, defineEmits, ref, watch } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
     book: Object,
     index: Number,
-    rowChecked:{
-        Boolean,
-        default:false
-    }
 })
 
-const checked = ref(props.rowChecked)
-const emit = defineEmits(['onEdit', 'onDelete','onRowSeleted'])
+
+const emit = defineEmits(['onEdit', 'onDelete'])
 const onEdit = () => {
     emit('onEdit', props.book.id)
 }
@@ -41,14 +36,7 @@ const onDelete = () => {
     emit('onDelete', props.book.id)
 }
 
-watch(()=>checked.value,(newValue) =>{
-    emit('onRowSeleted',props.book.id,newValue)
-})
 
-watch(()=>props.rowChecked,(newVal)=>{
-    console.log("ujuhygfrde");
-    checked.value=newVal
-})
 
 </script>
 

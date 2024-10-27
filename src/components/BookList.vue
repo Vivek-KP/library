@@ -7,17 +7,17 @@
                 v-model="searchBook">
         </div>
         <div class=" ps-3  d-flex justify-content-end ">
-            <button type="button" class="btn btn-success btn-sm me-2" @click="Slider('IMPORT')">
-                <div class="d-flex">
-                    <span class="material-symbols-outlined fs-5 pe-1">download</span>
-                    <span> Import Book</span>
-
-                </div>
-            </button>
             <button type="button" class="btn btn-primary btn-sm" @click="Slider('ADD')">
                 <div class="d-flex">
                     <span class="material-symbols-outlined fs-5 pe-1">library_books</span>
                     <span> Add Book</span>
+
+                </div>
+            </button>
+            <button type="button" class="btn btn-success btn-sm me-2 ms-2" @click="Slider('IMPORT')">
+                <div class="d-flex">
+                    <span class="material-symbols-outlined fs-5 pe-1">download</span>
+                    <span> Import Book</span>
 
                 </div>
             </button>
@@ -36,7 +36,6 @@
                 <table class="table table-hover table-dark">
                     <thead>
                         <tr>
-                            <th class="td-style"><input type="checkbox" v-model="rowChecked"></th>
                             <th width="3%" class="td-style mobile-display-none">Sl no</th>
                             <th align="left" class="td-style" width="23%"> Title</th>
                             <th align="left" width="15%" class="td-style">Author</th>
@@ -49,8 +48,9 @@
                         </tr>
                     </thead>
                     <tbody v-if="filterBook.length">
-                        <BookRow v-for="(book, index) in filterBook" :row-checked="rowChecked" :key="book.id" :index="index" :book="book"
-                            @onEdit="onEdit" @onDelete="decideDelete" @onRowSeleted ="onRowSeleted"/>
+                        <BookRow v-for="(book, index) in filterBook" :row-checked="rowChecked" :key="book.id"
+                            :index="index" :book="book" @onEdit="onEdit" @onDelete="decideDelete"
+                            @onRowSeleted="onRowSeleted" />
                     </tbody>
                     <tbody v-else>
                         <tr>
@@ -71,11 +71,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import BookModel from '../sliderModel/BookModel.vue'
 import BookRow from './BookRow.vue'
 import axios from 'axios';
 import DeleteSlider from '../sliderModel/BookDeleteSlider.vue'
+
+
 
 
 const type = ref('')
@@ -83,8 +85,6 @@ const showSlider = ref(false)
 const bookId = ref(0)
 const bookList = ref([])
 const searchBook = ref("")
-const rowChecked = ref(false)
-const idGoingToDelete = ref([])
 
 const filterBook = computed({
     get() {
@@ -145,40 +145,8 @@ const decideDelete = (book_Id) => {
 
 }
 
-const onRowSeleted = (bookId,selected)=>{
-    console.log(bookId,selected);
-    
-    if(selected && !rowChecked.value){
-        idGoingToDelete.value.push(bookId)
-        console.log(idGoingToDelete.value);
-        
-    }else{
-        const index = idGoingToDelete.value.indexOf(bookId)
-        if(index!== -1){
-            idGoingToDelete.value.splice(index,1)
 
-        }
-    }
-}
 
-watch(()=>rowChecked.value , (newVal)=>{
-    console.log("watch this" ,newVal);
-    
-    if(newVal){
-        bookList.value.forEach((book)=>{
-            if(!idGoingToDelete.value.includes(book.id)){
-                idGoingToDelete.value.push(book.id)
-            }
-          
-        })
-        console.log(idGoingToDelete.value);
-        
-    }else{
-
-    idGoingToDelete.value = []
-    }
-
-})
 
 onMounted(getAllBooks)
 </script>

@@ -21,35 +21,38 @@
         @on-delete="onSave" />
     </div>
     <div class="card p-2 shadow-sm">
-      <div class="card  table-responsive">
-        <table class="table table-hover table-dark ">
-          <thead>
-            <tr style="background-color:#1f1e2f;">
-              <th class="td-style mobile-display-none">Sl no</th>
-              <th class="td-style"> Member Name</th>
-              <th class="td-style">Email</th>
-              <th class="td-style">Joined Date</th>
-              <th class="td-style">Total Fee</th>
-              <th class="td-style">Edit</th>
-              <th class="td-style">Delete</th>
+      <div class="card">
+        <div class="table-responsive" style="max-height: 70vh;">
+          <table class="table table-hover table-dark ">
+            <thead>
+              <tr style="background-color:#1f1e2f;">
+                <th class="td-style mobile-display-none">Sl no</th>
+                <th class="td-style"> Member Name</th>
+                <th class="td-style">Email</th>
+                <th class="td-style">Joined Date</th>
+                <th class="td-style">Total Fee</th>
+                <th class="td-style">Edit</th>
+                <th class="td-style">Delete</th>
+  
+              </tr>
+            </thead>
+            <tbody v-if="filterMember.length">
+              <MemberRow v-for="(member, index) in filterMember" :key="member.id" :index="index" :member="member"
+                @onEdit="onEdit" @onDelete="decideDelete" />
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td align="center" class="p-5 text-secondary td-style" colspan="7"><span
+                    class="material-symbols-outlined">
+                    hourglass_empty
+                  </span>
+                  <h5>No Members Yet</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-            </tr>
-          </thead>
-          <tbody v-if="filterMember.length">
-            <MemberRow v-for="(member, index) in filterMember" :key="member.id" :index="index" :member="member"
-              @onEdit="onEdit" @onDelete="decideDelete" />
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <td align="center" class="p-5 text-secondary td-style" colspan="7"><span
-                  class="material-symbols-outlined">
-                  hourglass_empty
-                </span>
-                <h5>No Members Yet</h5>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </div>
       </div>
 
     </div>
