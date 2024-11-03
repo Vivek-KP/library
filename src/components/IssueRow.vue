@@ -1,7 +1,7 @@
 <template>
     <tr>
         <td class="td-style">{{ index }}</td>
-        <td align="left" width="35%" class="td-style">{{ issuedData.book.title }}</td>
+        <td width="35%" class="td-style">{{ issuedData.book.title }}</td>
         <td class="td-style">{{ issuedData.member.name }}</td>
         <td class="td-style">{{ issuedData.issuedDate }}</td>
         <td class="td-style">{{ issuedData.returnDate }}</td>

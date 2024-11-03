@@ -96,18 +96,23 @@
                                 <span>Close</span>
                             </div>
                         </button>
-                        <button type="submit" class="btn btn-sm btn-primary">
-                            <div class="d-flex">
-                                <span class="material-symbols-outlined fs-5 pe-1">{{ actionType === 'IMPORT' ?
-                                    'download' : 'check' }}</span>
-                                <span>{{ actionType === 'IMPORT' ? 'Import' : 'Save' }}</span>
-
-                            </div>
-                        </button>
+                        <div v-if="!loading">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                <div class="d-flex">
+                                    <span class="material-symbols-outlined fs-5 pe-1">{{ actionType === 'IMPORT' ?
+                                        'download' : 'check' }}</span>
+                                    <span>{{ actionType === 'IMPORT' ? 'Import' : 'Save' }}</span>
+    
+                                </div>
+                            </button>
+                        </div>
+                        <div v-else class="spinner-border" role="status">
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
+       
     </div>
 </template>
 
@@ -132,6 +137,7 @@ const props = defineProps({
 const emit = defineEmits(['onClose', 'onSave'])
 
 let modalInstance = ref(null)
+let loading = ref(false)
 // const modalInstanc = ref(null)
 const book = ref({
     title: '',
@@ -212,7 +218,6 @@ const decideProcess = () => {
                 createbook();
             }
         } else {
-
             importBooks()
         }
     } else {
@@ -235,6 +240,8 @@ const updateBook = () => {
         toast.error("Something went wrong");
     });
 }
+
+
 const createbook = () => {
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/book`, book.value).then((response) => {
         const responseData = response.data
@@ -257,6 +264,7 @@ const onClose = () => {
 }
 
 const importBooks = () => {
+    loading.value = true
     const params = {
         title: book.value.title ?? '',
         author: book.value.author ?? '',
@@ -264,8 +272,6 @@ const importBooks = () => {
         isbn: book.value.isbn ?? '',
         bookCount: book.value.importCount ?? ''
     }
-
-
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/book/import`, params).then((response) => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {
@@ -275,7 +281,9 @@ const importBooks = () => {
         } else {
             toast.info(responseData.message);
         }
+        loading.value= false
     }).catch(() => {
+        loading.value=false
         toast.error("Something went wrong");
     });
 }
