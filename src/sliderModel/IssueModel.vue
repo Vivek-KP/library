@@ -32,7 +32,7 @@
                                 <select class=" form-select text-white form-control w-100 border-1 input-field"
                                     id="name" type="text" v-model="issueBookDetails.member.id"
                                     placeholder="Select Book">
-                                    <option value="" disabled selected>Select membr</option>
+                                    <option value="" disabled selected>Select member</option>
                                     <option v-for="member in memberList" :key="member.id" :value="member.id">{{
                                         member.name }}</option>
                                 </select><br>
@@ -46,7 +46,7 @@
                                 </span>
                                 <Flatpicker class="text-white form-control w-100 border-1 input-field"
                                     v-model="issueBookDetails.issueDate" :config="config"
-                                    placeholder="Enter Issueing date"></Flatpicker><br>
+                                    placeholder="Enter Issuing date"></Flatpicker><br>
                             </div>
                             <span v-if="v$.issueBookDetails.issueDate.$error" class="text-danger">
                                 <p class="fs-6 text-start ps-4">* Pick Issued Date</p>
