@@ -132,7 +132,6 @@ const filterIssuedBook = computed({
 
 const dashboardData = ref('')
 const getDashboardData = () => {
-  console.log('API Base URL:', `${process.env.VUE_APP_API_BASE_URL}`);
   axios.get(`${process.env.VUE_APP_API_BASE_URL}/dashboard`).then(res => {
     const response = res.data
     dashboardData.value = response.data
@@ -165,7 +164,6 @@ const Slider = () => {
 
 
 const onClose = () => {
-  console.log('close');
   showSlider.value = false
   returnSlider.value = false
   issueId.value = ''

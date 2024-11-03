@@ -170,10 +170,8 @@ onMounted(() => {
 
     watch(() => props.showSlider, (newVal) => {
         if (newVal) {
-            console.log("true");
             modalInstance.value.show();
         } else {
-            console.log("false");
             // modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
             modalInstance.value.hide();
         }
@@ -204,28 +202,20 @@ const getAllbooks = () => {
 }
 
 const decideProcess = () => {
-    console.log("des");
 
     v$.value.$touch()
     if (!v$.value.$invalid) {
         if (props.actionType != 'IMPORT') {
             if (props.bookId) {
-                console.log('valid1');
-
                 updateBook();
             } else {
-                console.log('valid2');
-
                 createbook();
             }
         } else {
-            console.log("imp");
 
             importBooks()
         }
     } else {
-        console.log('valid');
-
         return false
     }
 }
@@ -274,7 +264,7 @@ const importBooks = () => {
         isbn: book.value.isbn ?? '',
         bookCount: book.value.importCount ?? ''
     }
-    console.log(params);
+
 
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/book/import`, params).then((response) => {
         const responseData = response.data

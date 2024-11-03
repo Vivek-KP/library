@@ -1,10 +1,11 @@
 <template>
     <tr>
         <td class="td-style mobile-display-none">{{ index + 1 }}</td>
-        <td align="left" data-label="Title" class="td-style ps-5">{{ book.title }}</td>
-        <td align="left" data-label="Author" class="td-style ps-5">{{ book.author }}</td>
+        <td data-label="Title" class="td-style">{{ book.title }}</td>
+        <td data-label="Author" class="td-style">{{ book.author }}</td>
         <td data-label="Publication Date" class="td-style">{{ book.publicationDate }}</td>
         <td data-label="Publisher" class="td-style">{{ book.publisher }}</td>
+        <td data-label="isbn" class="td-style">{{ book.isbn }}</td>
         <td data-label="Rating" class="td-style">{{ book.averageRating }}</td>
         <td data-label="Stock" class="td-style">{{ book.stock }}</td>
         <td data-label="Edit" class="td-style"><a href="#" class="card-refresh" data-toggle="refresh"

@@ -37,10 +37,11 @@
                     <thead>
                         <tr>
                             <th width="3%" class="td-style mobile-display-none">Sl no</th>
-                            <th align="left" class="td-style" width="23%"> Title</th>
-                            <th align="left" width="15%" class="td-style">Author</th>
-                            <th class="td-style">Publication Date</th>
-                            <th class="td-style">Publisher</th>
+                            <th class="td-style" width="20%"> Title</th>
+                            <th width="15%" class="td-style">Author</th>
+                            <th width="12%" class="td-style">Publication Date</th>
+                            <th width="12%" class="td-style">Publisher</th>
+                            <th class="td-style">ISBN</th>
                             <th class="td-style">Rating</th>
                             <th class="td-style">Stock</th>
                             <th class="td-style">Update</th>
@@ -101,7 +102,6 @@ const filterBook = computed({
 
 
 const getAllBooks = () => {
-    console.log("mlkjn");
     axios.get(`${process.env.VUE_APP_API_BASE_URL}/book`).then((response) => {
         const responseData = response.data
         bookList.value = responseData.data

@@ -37,7 +37,6 @@ const navigationType = ref('')
 
 watch(route, (newRoute) => {
   navigationType.value = newRoute.name;
-  console.log(newRoute.name); // Logs route name whenever it changes
 });
 
 const emit = defineEmits(['navigate'])

@@ -147,7 +147,6 @@ onMounted(() => {
 })
 const memberList = ref([])
 const getAllMembers = () => {
-    console.log('API Base URL:', process.env.VUE_APP_API_BASE_URL);
     axios.get(`${process.env.VUE_APP_API_BASE_URL}/member`).then((response) => {
         const responseData = response.data
         memberList.value = responseData.data
@@ -160,13 +159,10 @@ onMounted(getAllMembers)
 
 watch(() => props.showSlider, (newVal) => {
     if (newVal) {
-        console.log("true123");
         getAllbooks()
         modalInstance.value.show();
 
     } else {
-        console.log("false");
-        // modalInstance.value = new bootstrapBundleMin.Modal(modal.value);
         modalInstance.value.hide();
     }
 
@@ -189,7 +185,6 @@ const getAllbooks = () => {
         const responseData = response.data
 
         bookList.value = responseData.data
-        console.log(bookList.value);
         
     }).catch(() => {
 
@@ -199,7 +194,6 @@ const getAllbooks = () => {
 onMounted(getAllbooks)
 
 const decideProcess = () => {
-    console.log("yhuhbjbjhb");
     v$.value.$touch()
     if (!v$.value.$invalid) {
         const params = {
@@ -230,15 +224,10 @@ const updateIssuedDetails = (params) => {
         }
         onClose();
     }).catch(() => {
-        toast.error("Something went wrong", {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error("Something went wrong");
     });
 }
 const createBookIssue = (params) => {
-    console.log(params);
-
     axios.post(`${process.env.VUE_APP_API_BASE_URL}/issue`, params).then((response) => {
         const responseData = response.data
         if (responseData.status === 'SUCCESS') {

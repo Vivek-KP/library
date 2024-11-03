@@ -67,10 +67,8 @@ const returnModel = ref(null)
 
 watch(() => props.returnSlider, (newVal) => {
     if (newVal) {
-        console.log("true");
         modalInstance.value.show();
     } else {
-        console.log("false");
         modalInstance.value.hide();
     }
 });
@@ -91,10 +89,7 @@ const onDelete = () => {
             toast.info(responseData.message);
         }
     }).catch(() => {
-        toast.error('Something went wrong', {
-            timeout: 500,
-            theme: 'colored'
-        });
+        toast.error('Something went wrong');
     })
 }
 onMounted(() => {

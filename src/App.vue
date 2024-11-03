@@ -74,9 +74,7 @@ onMounted(() => {
   /* border-bottom: 1px solid rgb(221, 221, 221); */
   height: 60px;
   position: sticky;
-  /* Make it sticky */
   top: 0;
-  /* Stick it to the top */
   z-index: 1000;
   background-color: #171626;
 

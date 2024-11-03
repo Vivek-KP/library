@@ -55,10 +55,8 @@ const deleteModel = ref(null)
 
 watch(() => props.deleteSlider, (newVal) => {
     if (newVal) {
-        console.log("true");
         modalInstance.value.show();
     } else {
-        console.log("false");
         modalInstance.value.hide();
     }
 });
